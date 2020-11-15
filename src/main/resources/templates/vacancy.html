@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:action="@{/vacancy}" method="post">
+    <div><label> Название задачи: <input type="text" name="title"/> </label></div>
+    <div><label>Текст задачи: <textarea name="text"></textarea> </label></div>
+    <div>Тэги задачи: <input type="text" name="tag"/> </label></div>
+    <div><input type="submit" value="Отправить"/></div>
+</form>
+<div th:if="${message}">
+    <p th:text="${message}"></p>
+</div>
+<a href="/vacancyList">Ваши вакансии</a>
+</body>
+</html>

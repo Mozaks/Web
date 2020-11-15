@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+Редактор пользователя
+<form th:action="@{/customer}" method="post">
+    <input type="text" name="customerName" th:placeholder="${customer.getUsername()}">
+    <div th:each="role : ${customer.getRoles()}">
+        <label th:utext="${role.name()}"><input type="checkbox" th:name="${role.name()}"></label>
+    </div>
+    <input type="hidden" name="customerId" th:value="${customer.getId()}">
+    <button type=" submit">Отправить</button>
+</form>
+</body>
+</html>
