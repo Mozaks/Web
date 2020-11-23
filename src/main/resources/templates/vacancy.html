@@ -6,15 +6,12 @@
     <title>Title</title>
 </head>
 <body>
-<form th:action="@{/vacancy}" method="post">
+<form th:action="@{/vacancy/add}" method="post">
     <div><label> Название задачи: <input type="text" name="title"/> </label></div>
     <div><label>Текст задачи: <textarea name="text"></textarea> </label></div>
     <div>Тэги задачи: <input type="text" name="tag"/> </label></div>
     <div><input type="submit" value="Отправить"/></div>
 </form>
-<div th:if="${message}">
-    <p th:text="${message}"></p>
-</div>
-<a href="/vacancyList">Ваши вакансии</a>
+<a href="vacancy/list">Ваши вакансии</a>
 </body>
 </html>

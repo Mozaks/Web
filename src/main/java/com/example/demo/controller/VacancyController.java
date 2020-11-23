@@ -7,31 +7,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
-public class VacancyController {//чек
+@RequestMapping("/vacancy")
+public class VacancyController {
     @Autowired
     private VacancyRepository vacancyRepository;
 
-    @GetMapping("/vacancy")
+    @GetMapping
     public String vacancy(@AuthenticationPrincipal Customer customer, Model model) {
         return "vacancy";
     }
 
-
-    @GetMapping("/vacancyList")
-    public String vacancyList(@AuthenticationPrincipal Customer customer, Model model) {
-        Iterable<Vacancy> vacancies = vacancyRepository.findByAuthor_Id(customer.getId());
-        model.addAttribute("vacancies", vacancies);
-        return "vacancyList";
-    }
-
-    @PostMapping("/vacancy")
+    @PostMapping("/add")
     public String addVacancy(@AuthenticationPrincipal Customer customer, @RequestParam String title,
                              @RequestParam String text,
                              @RequestParam String tag, Model model) {
@@ -42,23 +35,48 @@ public class VacancyController {//чек
         vacancy.setAuthor(customer);
         vacancyRepository.save(vacancy);
 
-        model.addAttribute("message", "Вакансия была успешно добавлена");
-
-        return "vacancy";
+        return "redirect:/vacancy";
     }
 
-    @PostMapping("/filter")
-    public String filter(@RequestParam String filter, Model model) {
-        List<Vacancy> vacancyList;
-        if (!filter.isEmpty()) {
-            vacancyList = vacancyRepository.findByTag(filter);
-        } else {
-            vacancyList = vacancyRepository.findAll();
+    @GetMapping("/list")
+    public String vacancyList(@AuthenticationPrincipal Customer customer, Model model) {
+        Iterable<Vacancy> vacancies = vacancyRepository.findByAuthor_Id(customer.getId());
+        model.addAttribute("vacancies", vacancies);
+        return "vacancy-list";
+    }
+
+    @GetMapping("{id}/edit")
+    public String vacancyEdit(@PathVariable(value = "id") int id, Model model) {
+        if (!vacancyRepository.existsById(id))
+        {
+            return "redirect:/vacancy/list";
         }
-        model.addAttribute("vacancies", vacancyList);
-        return "hello";
+        Optional<Vacancy> vacancy = vacancyRepository.findById(id);
+        ArrayList<Vacancy> lst = new ArrayList<>();
+        vacancy.ifPresent(lst::add);
+        model.addAttribute("lst", lst);
+        return "vacancy-edit";
     }
 
+    @PostMapping("{id}/edit")
+    public String vacancyUpdate(@RequestParam(name="vacancyTitle", required=false) String title , @RequestParam(name="vacancyTag", required=false) String tag ,
+                              @RequestParam(name="vacancyText", required=false) String text , @PathVariable(value = "id") int id)
+    {
+        Vacancy vacancy = vacancyRepository.findById(id).orElseThrow();
+        vacancy.setTitle(title);
+        vacancy.setTag(tag);
+        vacancy.setText(text);
+        vacancyRepository.save(vacancy);
+        return "redirect:/vacancy/list";
+    }
+
+    @PostMapping("{id}/remove")
+    public String vacancyRemove(@PathVariable(value = "id") int id)
+    {
+        Vacancy vacancy = vacancyRepository.findById(id).orElseThrow();
+        vacancyRepository.delete(vacancy);
+        return "redirect:/vacancy/list";
+    }
 
 
 }

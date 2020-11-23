@@ -8,7 +8,7 @@
 </head>
 <body>
 Список вакансий
-<table border = "1">
+<table border="1">
     <thead>
     <tr>
         <th>Название</th>
@@ -16,6 +16,7 @@
         <th>Тэг</th>
         <th>Автор</th>
         <th>Исполнитель</th>
+        <th></th>
         <th></th>
     </tr>
     </thead>
@@ -25,7 +26,12 @@
         <td th:text="${vacancy.getTag()}"></td>
         <td th:text="${vacancy.getAuthorName()}"></td>
         <td th:text="${vacancy.getWorkerName()}"></td>
-        <td><a th:href="@{'/vacancy-edit/' + ${vacancy.getId()}}">Редактировать</a></td>
+        <td><a th:href="@{'/vacancy/' + ${vacancy.getId()} + '/edit'}">Редактировать</a></td>
+        <td>
+            <form th:action="'/vacancy/' + ${vacancy.getId()} + '/remove'" method="post">
+                <button type="submit">Удалить</button>
+            </form>
+        </td>
     </tr>
 </table>
 </body>

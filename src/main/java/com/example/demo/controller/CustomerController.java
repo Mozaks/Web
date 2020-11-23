@@ -18,13 +18,13 @@ public class CustomerController {
     @GetMapping
     public String printCustomers(Model model) {
         model.addAttribute("customers", customerRepository.findAll());
-        return "customerList";
+        return "customer-list";
     }
 
     @GetMapping("{customer}")
     public String customerEdit(@PathVariable Customer customer, Model model) {
         model.addAttribute("customer", customer);
-        return "customerEdit";
+        return "customer-edit";
     }
 
     @PostMapping
