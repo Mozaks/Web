@@ -36,7 +36,7 @@ public class RegistrationController {
 
         customer.setActive(true);
         Set<Role> roles = new HashSet<>();
-        roles.add(Role.ADMIN);
+//        roles.add(Role.ADMIN);
         roles.add(Role.USER);
         customer.setRoles(roles);
         customerRepository.save(customer);

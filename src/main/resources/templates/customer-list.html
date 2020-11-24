@@ -18,6 +18,7 @@
         <th>Роли</th>
         <th>Почта</th>
         <th></th>
+        <th></th>
     </tr>
     </thead>
     <tr th:each="customer : ${customers}">
@@ -27,7 +28,12 @@
         <td th:text="${customer.getLastName()}"></td>
         <td th:text="${customer.getRoles()}"></td>
         <td th:text="${customer.getEmail()}"></td>
-        <td><a th:href="@{'/customer/' + ${customer.getId()}}">Редактировать</a></td>
+        <td><a th:href="@{'/customer/' + ${customer.getId()} + '/edit'}">Редактировать</a></td>
+        <td>
+            <form th:action="'/customer/' + ${customer.getId()} + '/remove'" method="post">
+                <button type="submit">Удалить</button>
+            </form>
+        </td>
     </tr>
 </table>
 </body>
