@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Set;
 
 @Controller
 public class MainController {
@@ -59,7 +60,14 @@ public class MainController {
     @PostMapping("/selected/{id}")
     public String setWorker(@AuthenticationPrincipal Customer customer, @PathVariable(value = "id") int id, Model model)
     {
-        customer.getRequests().add(vacancyRepository.findById(id).get().getAuthor());
+        Set<Customer> set = customer.getRequests();
+        for (Customer cs : set) {
+            if (cs.getUsername().equals(vacancyRepository.findById(id).get().getAuthorName())) {
+                break;
+            }
+            customer.getRequests().add(vacancyRepository.findById(id).get().getAuthor());
+        }
+
         customer.getVacancies().add(vacancyRepository.findById(id).get());
         customerRepository.save(customer);
         return "redirect:/hello";

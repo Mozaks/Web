@@ -33,17 +33,14 @@ public class AccountController {
 
         Set<Customer> setReq = customer.getRequests();
         model.addAttribute("request", setReq);
-        
+
         Set<Vacancy> vacancies = new HashSet<>();
 
-        for (Customer cust : setSug)
-        {
+        for (Customer cust : setSug) {
             Customer worker = customerRepository.findById(cust.getId()).orElseThrow();
             Set<Vacancy> vac = worker.getVacancies();
-            for (Vacancy vacancy : vac)
-            {
-                if (vacancy.getAuthor().getId() == customer.getId())
-                {
+            for (Vacancy vacancy : vac) {
+                if (vacancy.getAuthor().getId() == customer.getId()) {
                     vacancies.add(vacancy);
                 }
             }
@@ -55,13 +52,15 @@ public class AccountController {
     }
 
     @PostMapping("/appoint/{idSug}/vacancy/{idVac}")
-    public String appoint(@PathVariable(value = "idSug") int idSug, @PathVariable(value = "idVac") int idVac, @AuthenticationPrincipal Customer customer)
-    {
+    public String appoint(@PathVariable(value = "idSug") int idSug, @PathVariable(value = "idVac") int idVac, @AuthenticationPrincipal Customer customer) {
         Vacancy vacancy = vacancyRepository.findById(idVac).orElseThrow();
         vacancy.setWorker(customerRepository.findById(idSug).orElseThrow());
         vacancyRepository.save(vacancy);
         Customer cust = customerRepository.findById(idSug).orElseThrow();
         cust.getVacancies().remove(vacancy);
+        if (cust.getVacancies().isEmpty()) {
+            cust.getRequests().remove(vacancyRepository.findById(idVac).get().getAuthor());
+        }
         customerRepository.save(cust);
         return "redirect:/suggestion/" + customer.getId();
     }

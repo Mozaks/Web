@@ -50,7 +50,7 @@ public class Customer implements UserDetails {
     @JoinTable(
             name = "vacancy_suggest",
             joinColumns = {
-                    @JoinColumn(name = "customer_id")
+                    @JoinColumn(name = "customer_id", unique = false)
             }
     )
     private Set<Vacancy> vacancies = new HashSet<>();
