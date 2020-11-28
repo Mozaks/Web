@@ -14,9 +14,9 @@
     <input type="text" name="filter" placeholder="Найти вакансию">
     <button type="submit">Найти</button>
 </form>
-<div>
-    <p th:each="vacancy : ${vacancies}"
-       th:text="'Название ' +${vacancy.getTitle()} + ' текст - ' + ${vacancy.getText()} + ' тэг - ' + ${vacancy.getTag()} + ' автор- ' + ${vacancy.getAuthorName()}"></p>
+<div th:each="vacancy : ${vacancies}">
+    <p th:text="'Название ' +${vacancy.getTitle()}  + ' тэг - ' + ${vacancy.getTag()} + ', исполнитель - ' + ${vacancy.getWorkerName()}"></p>
+    <a th:href="@{'/selected/' +${vacancy.getId()}}">Просмотреть вакансию</a>
 </div>
 </body>
 </html>

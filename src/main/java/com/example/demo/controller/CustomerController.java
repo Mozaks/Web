@@ -37,7 +37,7 @@ public class CustomerController {
     }
 
     @PostMapping("{id}/edit")
-    public String saveCustomer(@RequestParam String customerName, @PathVariable(value = "id") int id)
+    public String saveCustomer(@RequestParam String customerName,@RequestParam Map<String,String> form, @PathVariable(value = "id") int id)
     {
         Customer customer = customerRepository.findById(id).orElseThrow();
         if (!customerName.isEmpty()) {

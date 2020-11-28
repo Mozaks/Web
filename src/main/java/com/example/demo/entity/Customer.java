@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -22,9 +23,37 @@ public class Customer implements UserDetails {
     private String email;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "customer_role", joinColumns = @JoinColumn(name = "customer_id"))
+    @CollectionTable(
+            name = "customer_role",
+            joinColumns = @JoinColumn(name = "customer_id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "suggestion",
+            joinColumns = {@JoinColumn(name = "worker_id")},
+            inverseJoinColumns = {@JoinColumn(name = "author_id")}
+    )
+    private Set<Customer> suggestions = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "suggestion",
+            joinColumns = {@JoinColumn(name = "author_id")},
+            inverseJoinColumns = {@JoinColumn(name = "worker_id")}
+    )
+
+    private Set<Customer> requests = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "vacancy_suggest",
+            joinColumns = {
+                    @JoinColumn(name = "customer_id")
+            }
+    )
+    private Set<Vacancy> vacancies = new HashSet<>();
 
     public Customer() {
     }
@@ -130,5 +159,27 @@ public class Customer implements UserDetails {
         this.roles = roles;
     }
 
+    public Set<Customer> getSuggestions() {
+        return suggestions;
+    }
 
+    public void setSuggestions(Set<Customer> suggestions) {
+        this.suggestions = suggestions;
+    }
+
+    public Set<Customer> getRequests() {
+        return requests;
+    }
+
+    public void setRequests(Set<Customer> requests) {
+        this.requests = requests;
+    }
+
+    public Set<Vacancy> getVacancies() {
+        return vacancies;
+    }
+
+    public void setVacancies(Set<Vacancy> vacancies) {
+        this.vacancies = vacancies;
+    }
 }

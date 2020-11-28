@@ -1,6 +1,10 @@
 package com.example.demo.entity;
 
 import javax.persistence.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 
 @Entity
@@ -20,7 +24,6 @@ public class Vacancy {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "author_id")
     private Customer author;
-
 
     public String getTitle() {
         return title;

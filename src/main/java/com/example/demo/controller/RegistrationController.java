@@ -18,25 +18,24 @@ import java.util.Set;
 public class RegistrationController {
     @Autowired
     private CustomerRepository customerRepository;
+
     @GetMapping("/registration")
-    public String registration()
-    {
+    public String registration() {
         return "registration";
     }
 
     @PostMapping("/registration")
-    public String addCustomer(Customer customer, Model model)
-    {
+    public String addCustomer(Customer customer, Model model) {
         Customer customerDb = customerRepository.findByUsername(customer.getUsername());
 
-        if (customerDb != null){
+        if (customerDb != null) {
             model.addAttribute("message", "Customer alreage exists!");
             return "registration";
         }
 
         customer.setActive(true);
         Set<Role> roles = new HashSet<>();
-//        roles.add(Role.ADMIN);
+        //roles.add(Role.ADMIN);
         roles.add(Role.USER);
         customer.setRoles(roles);
         customerRepository.save(customer);
