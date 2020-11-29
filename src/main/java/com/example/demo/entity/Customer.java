@@ -30,18 +30,27 @@ public class Customer implements UserDetails {
     private Set<Role> roles;
 
     @ManyToMany(fetch = FetchType.EAGER)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @JoinTable(
             name = "suggestion",
-            joinColumns = {@JoinColumn(name = "worker_id")},
-            inverseJoinColumns = {@JoinColumn(name = "author_id")}
+            joinColumns = {
+                    @JoinColumn(
+                            name = "worker_id")},
+            inverseJoinColumns = {
+                    @JoinColumn(
+                            name = "author_id")}
     )
     private Set<Customer> suggestions = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "suggestion",
-            joinColumns = {@JoinColumn(name = "author_id")},
-            inverseJoinColumns = {@JoinColumn(name = "worker_id")}
+            joinColumns = {
+                    @JoinColumn(
+                            name = "author_id")},
+            inverseJoinColumns = {
+                    @JoinColumn(
+                            name = "worker_id")}
     )
 
     private Set<Customer> requests = new HashSet<>();
@@ -50,7 +59,8 @@ public class Customer implements UserDetails {
     @JoinTable(
             name = "vacancy_suggest",
             joinColumns = {
-                    @JoinColumn(name = "customer_id", unique = false)
+                    @JoinColumn(
+                            name = "customer_id",referencedColumnName = "id")
             }
     )
     private Set<Vacancy> vacancies = new HashSet<>();

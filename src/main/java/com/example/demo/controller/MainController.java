@@ -48,7 +48,7 @@ public class MainController {
     {
         Vacancy vacancy = vacancyRepository.findById(id).orElseThrow();
         model.addAttribute("vacancy", vacancy);
-        if (customer.getId() == vacancy.getAuthor().getId()) {
+        if (customer.getId().equals(vacancy.getAuthor().getId())) {
             model.addAttribute("yourself",false);
         }
         else {
@@ -60,19 +60,10 @@ public class MainController {
     @PostMapping("/selected/{id}")
     public String setWorker(@AuthenticationPrincipal Customer customer, @PathVariable(value = "id") int id, Model model)
     {
-        Set<Customer> set = customer.getRequests();
-        for (Customer cs : set) {
-            if (cs.getUsername().equals(vacancyRepository.findById(id).get().getAuthorName())) {
-                break;
-            }
-            customer.getRequests().add(vacancyRepository.findById(id).get().getAuthor());
-        }
-
+        customer.getRequests().add(vacancyRepository.findById(id).get().getAuthor());
         customer.getVacancies().add(vacancyRepository.findById(id).get());
-        customerRepository.save(customer);
+        customerRepository.saveAndFlush(customer);
         return "redirect:/hello";
     }
-
-
 
 }
