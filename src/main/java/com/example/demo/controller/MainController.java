@@ -60,9 +60,22 @@ public class MainController {
     @PostMapping("/selected/{id}")
     public String setWorker(@AuthenticationPrincipal Customer customer, @PathVariable(value = "id") int id, Model model)
     {
-        customer.getRequests().add(vacancyRepository.findById(id).get().getAuthor());
+        customer.getVacancies().clear();
+        if (customer.getRequests().isEmpty()){
+            customer.getRequests().add(vacancyRepository.findById(id).get().getAuthor());
+        } else {
+            Set<Customer> set = customer.getRequests();
+            for (Customer cs : set) {
+                if (cs.getUsername().equals(vacancyRepository.findById(id).get().getAuthorName())) {
+                    customer.getRequests().clear();
+                    break;
+                }
+                System.out.println("not found");
+                customer.getRequests().add(vacancyRepository.findById(id).get().getAuthor());
+            }
+        }
         customer.getVacancies().add(vacancyRepository.findById(id).get());
-        customerRepository.saveAndFlush(customer);
+        customerRepository.save(customer);
         return "redirect:/hello";
     }
 
