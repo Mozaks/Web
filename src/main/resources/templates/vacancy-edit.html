@@ -9,13 +9,14 @@
 <body>
 Редактор вакансий
 <div th:each="vacancy : ${lst}">
-<form th:action="'/vacancy/' + ${vacancy.getId()} + '/edit'" method="post">
-    <label> <input type="text" name="vacancyTitle" th:value="${vacancy.getTitle()}"> Редактирование заголовка</label><br>
-    <label> <input type="text" name="vacancyTag" th:value="${vacancy.getTag()}"> Редактирование тэга</label><br>
-    <label> <input type="text" name="vacancyText" th:value="${vacancy.getText()}"> Редактирование текста</label><br>
-    <input type="hidden" name="vacancyId" th:value="${vacancy.getId()}">
-    <button type=" submit">Редактировать</button>
-</form>
+    <form method="post">
+        <label> <input type="text" name="vacancyTitle" th:value="${vacancy.getTitle()}"> Редактирование
+            заголовка</label><br>
+        <label> <input type="text" name="vacancyTag" th:value="${vacancy.getTag()}"> Редактирование тэга</label><br>
+        <label> <input type="text" name="vacancyText" th:value="${vacancy.getText()}"> Редактирование текста</label><br>
+        <input type="hidden" name="vacancyId" th:value="${vacancy.getId()}">
+        <button type=" submit">Редактировать</button>
+    </form>
 </div>
 </body>
 </html>

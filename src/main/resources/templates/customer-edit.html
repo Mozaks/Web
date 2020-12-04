@@ -13,7 +13,7 @@
     <ul>
         <li th:each="role : ${T(com.example.demo.role.Role).values()}">
             <div>
-                <input type="checkbox" name="roles" th:field="*{roles}" th:value="${role.name()}" />
+                <input type="checkbox" name="roles" th:field="*{roles}" th:value="${role.name()}"/>
                 <label th:text="${role.name()}"></label>
             </div>
         </li>

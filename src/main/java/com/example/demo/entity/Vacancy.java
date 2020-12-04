@@ -57,8 +57,7 @@ public class Vacancy {
         this.author = author;
     }
 
-    public String getAuthorName()
-    {
+    public String getAuthorName() {
         return author != null ? author.getUsername() : "заказчика нет";
     }
 
@@ -80,7 +79,7 @@ public class Vacancy {
     }
 
 
-    public String  getWorkerName() {
+    public String getWorkerName() {
         return worker != null ? worker.getUsername() : "исполнителя нет";
     }
 

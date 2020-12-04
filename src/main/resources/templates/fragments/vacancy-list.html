@@ -7,6 +7,7 @@
     <title>Title</title>
 </head>
 <body>
+<div th:if="${vacancies!=null and !vacancies.empty}" th:fragment="vacancy-list">
 Список вакансий
 <table border="1">
     <thead>
@@ -26,13 +27,14 @@
         <td th:text="${vacancy.getTag()}"></td>
         <td th:text="${vacancy.getAuthorName()}"></td>
         <td th:text="${vacancy.getWorkerName()}"></td>
-        <td><a th:href="@{'/vacancy/' + ${vacancy.getId()} + '/edit'}">Редактировать</a></td>
+        <td><a th:href="@{'/profile/vacancy/editor/' + ${vacancy.getId()} + '/edit'}">Редактировать</a></td>
         <td>
-            <form th:action="'/vacancy/' + ${vacancy.getId()} + '/remove'" method="post">
+            <form th:action="@{'profile/vacancy/editor/' + ${vacancy.getId()} + '/remove'}" method="post">
                 <button type="submit">Удалить</button>
             </form>
         </td>
     </tr>
 </table>
+</div>
 </body>
 </html>

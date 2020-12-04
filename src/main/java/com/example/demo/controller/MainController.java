@@ -43,25 +43,23 @@ public class MainController {
         return "main-page";
     }
 
+    @SuppressWarnings("checkstyle:Indentation")
     @GetMapping("/selected/{id}")
-    public String selected(@AuthenticationPrincipal Customer customer, @PathVariable(value = "id") int id, Model model)
-    {
+    public String selected(@AuthenticationPrincipal Customer customer, @PathVariable(value = "id") int id, Model model) {
         Vacancy vacancy = vacancyRepository.findById(id).orElseThrow();
         model.addAttribute("vacancy", vacancy);
         if (customer.getId().equals(vacancy.getAuthor().getId())) {
-            model.addAttribute("yourself",false);
-        }
-        else {
-            model.addAttribute("yourself",true);
+            model.addAttribute("yourself", false);
+        } else {
+            model.addAttribute("yourself", true);
         }
         return "current-vacancy";
     }
 
     @PostMapping("/selected/{id}")
-    public String setWorker(@AuthenticationPrincipal Customer customer, @PathVariable(value = "id") int id, Model model)
-    {
+    public String setWorker(@AuthenticationPrincipal Customer customer, @PathVariable(value = "id") int id, Model model) {
         customer.getVacancies().clear();
-        if (customer.getRequests().isEmpty()){
+        if (customer.getRequests().isEmpty()) {
             customer.getRequests().add(vacancyRepository.findById(id).get().getAuthor());
         } else {
             Set<Customer> set = customer.getRequests();
@@ -70,11 +68,10 @@ public class MainController {
                     customer.getRequests().clear();
                     break;
                 }
-                System.out.println("not found");
                 customer.getRequests().add(vacancyRepository.findById(id).get().getAuthor());
             }
         }
-        customer.getVacancies().add(vacancyRepository.findById(id).get());
+        customer.getVacancies().add(vacancyRepository.findById(id).orElseThrow());
         customerRepository.save(customer);
         return "redirect:/hello";
     }

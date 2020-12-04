@@ -37,8 +37,7 @@ public class CustomerController {
     }
 
     @PostMapping("{id}/edit")
-    public String saveCustomer(@RequestParam String customerName, @PathVariable(value = "id") int id)
-    {
+    public String saveCustomer(@RequestParam String customerName, @PathVariable(value = "id") int id) {
         Customer customer = customerRepository.findById(id).orElseThrow();
         if (!customerName.isEmpty()) {
             customer.setUsername(customerName);
@@ -48,8 +47,7 @@ public class CustomerController {
     }
 
     @PostMapping("{id}/remove")
-    public String removeCustomer(@PathVariable(value = "id") int id)
-    {
+    public String removeCustomer(@PathVariable(value = "id") int id) {
         Customer customer = customerRepository.findById(id).orElseThrow();
         customerRepository.delete(customer);
         return "redirect:/customer";

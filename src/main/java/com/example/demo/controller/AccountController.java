@@ -26,7 +26,6 @@ public class AccountController {
     @GetMapping("/suggestion/{id}")
     public String vacancy(@PathVariable(value = "id") int id, Model model) {
         Customer customer = customerRepository.findById(id).orElseThrow();
-        List<Vacancy> vacancyList = vacancyRepository.findByAuthor_Id(id);
 
         Set<Customer> setSug = customer.getSuggestions();
         model.addAttribute("suggestion", setSug);
@@ -40,7 +39,7 @@ public class AccountController {
             Customer worker = customerRepository.findById(cust.getId()).orElseThrow();
             Set<Vacancy> vac = worker.getVacancies();
             for (Vacancy vacancy : vac) {
-                if (vacancy.getAuthor().getId() == customer.getId()) {
+                if (vacancy.getAuthor().getId().equals(customer.getId())) {
                     vacancies.add(vacancy);
                 }
             }
@@ -62,7 +61,7 @@ public class AccountController {
             cust.getRequests().remove(vacancyRepository.findById(idVac).get().getAuthor());
         }
         customerRepository.save(cust);
-        return "redirect:/suggestion/" + customer.getId();
+        return String.format("redirect:/suggestion/%s", customer.getId());
     }
 
 }

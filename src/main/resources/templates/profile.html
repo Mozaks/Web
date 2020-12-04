@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<header>
+    <div th:insert="~{fragments/header :: header}"></div>
+</header>
+<body th:object="${user}">
+    <div th:text="${user.getUsername()}"></div>
+    <div th:insert="~{fragments/vacancy-list :: vacancy-list}"></div>
+    <button onclick="window.location.href = '/vacancy';">Добавить вакансию</button>
+</body>
+</html>

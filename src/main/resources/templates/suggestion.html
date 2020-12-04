@@ -8,12 +8,12 @@
 <body>
 <div>
     <h3>Предложения на ваши вакансии</h3>
-    <div  th:each="sug : ${suggestion}">
-        <div  th:each="vacancy : ${vacancies}">
-    <p th:text="'Исполнитель - ' +${sug.getUsername()} + '; вакансия -' + ${vacancy.getTitle()}"></p>
-        <form method="post" th:action="'/appoint/' + ${sug.getId()} + '/vacancy/' + ${vacancy.getId()}">
-            <button type="submit">Назначить исполнителя</button>
-        </form>
+    <div th:each="sug : ${suggestion}">
+        <div th:each="vacancy : ${vacancies}">
+            <p th:text="'Исполнитель - ' +${sug.getUsername()} + '; вакансия -' + ${vacancy.getTitle()}"></p>
+            <form method="post" th:action="'/appoint/' + ${sug.getId()} + '/vacancy/' + ${vacancy.getId()}">
+                <button type="submit">Назначить исполнителя</button>
+            </form>
         </div>
     </div>
 </div>

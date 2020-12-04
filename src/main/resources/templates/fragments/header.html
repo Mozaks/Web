@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<body>
+<body>
+<div th:fragment="header">
+    <div th:fragment="main-page">
+        <a th:href="@{/hello}"> Главная страница</a>
+    </div>
+    <div th:fragment="profile">
+        <div sec:authorize="isAuthenticated()">
+        <a th:href="@{/profile}"> Профиль</a>
+        </div>
+    </div>
+    <div th:fragment="sign-out">
+        <div sec:authorize="isAuthenticated()">
+        <form th:action="@{/logout}" method="post">
+            <input type="submit" value="Выйти из профиля"/>
+        </form>
+        </div>
+    </div>
+    <div th:fragment="sign-in">
+        <div sec:authorize="isAnonymous()">
+            <a th:href="@{/login}"> Войти в профиль</a>
+        </div>
+    </div>
+</div>
+</body>
+</body>
+</html>

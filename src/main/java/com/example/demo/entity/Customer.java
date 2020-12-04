@@ -21,6 +21,7 @@ public class Customer implements UserDetails {
     private boolean active;
     private String password;
     private String email;
+    private String activationCode;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(
@@ -60,7 +61,7 @@ public class Customer implements UserDetails {
             name = "vacancy_suggest",
             joinColumns = {
                     @JoinColumn(
-                            name = "customer_id",referencedColumnName = "id")
+                            name = "customer_id", referencedColumnName = "id")
             }
     )
     private Set<Vacancy> vacancies = new HashSet<>();
@@ -191,5 +192,13 @@ public class Customer implements UserDetails {
 
     public void setVacancies(Set<Vacancy> vacancies) {
         this.vacancies = vacancies;
+    }
+
+    public String getActivationCode() {
+        return activationCode;
+    }
+
+    public void setActivationCode(String activationCode) {
+        this.activationCode = activationCode;
     }
 }

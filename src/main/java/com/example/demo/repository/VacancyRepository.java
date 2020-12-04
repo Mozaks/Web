@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface VacancyRepository extends JpaRepository<Vacancy, Integer> {
     List<Vacancy> findByTag(String str);
-    List<Vacancy> findByAuthor_Id(int author_id);
+    List<Vacancy> findByAuthorId(int authorId);
 
 }

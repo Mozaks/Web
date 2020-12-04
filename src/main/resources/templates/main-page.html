@@ -4,10 +4,10 @@
 <head>
     <title>Hello World!</title>
 </head>
+<header>
+    <div th:insert="~{fragments/header :: header}"></div>
+</header>
 <body>
-<form th:action="@{/logout}" method="post">
-    <input type="submit" value="Sign Out"/>
-</form>
 <h1 th:inline="text">Привет, [[${#httpServletRequest.remoteUser}]]!</h1>
 <a href="/vacancy">Добавить вакансию</a>
 <form method="post" th:action="@{/filter}">
