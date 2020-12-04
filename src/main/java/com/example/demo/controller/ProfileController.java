@@ -1,8 +1,6 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.Customer;
-import com.example.demo.entity.Vacancy;
-import com.example.demo.repository.VacancyRepository;
 import com.example.demo.service.ProfileService;
 import com.example.demo.service.VacancyEditService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +8,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/profile")

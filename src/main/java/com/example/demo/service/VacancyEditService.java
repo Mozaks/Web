@@ -1,10 +1,8 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.Customer;
 import com.example.demo.entity.Vacancy;
 import com.example.demo.repository.VacancyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;

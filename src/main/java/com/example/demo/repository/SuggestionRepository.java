@@ -7,7 +7,9 @@ import java.util.List;
 
 public interface SuggestionRepository extends JpaRepository<Suggestion, Integer> {
     List<Suggestion> findByAuthorId(int authorId);
+
     List<Suggestion> findByWorkerId(int workerId);
+
     List<Suggestion> findByVacancyId(int vacancyId);
 
 }
