@@ -1,8 +1,10 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.Customer;
+import com.example.demo.entity.Suggestion;
 import com.example.demo.entity.Vacancy;
 import com.example.demo.repository.CustomerRepository;
+import com.example.demo.repository.SuggestionRepository;
 import com.example.demo.repository.VacancyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -21,7 +23,7 @@ public class MainController {
     @Autowired
     private VacancyRepository vacancyRepository;
     @Autowired
-    private CustomerRepository customerRepository;
+    private SuggestionRepository suggestionRepository;
 
     @GetMapping("/hello")
     public String vacancy(Model model) {
@@ -43,7 +45,6 @@ public class MainController {
         return "main-page";
     }
 
-    @SuppressWarnings("checkstyle:Indentation")
     @GetMapping("/selected/{id}")
     public String selected(@AuthenticationPrincipal Customer customer, @PathVariable(value = "id") int id, Model model) {
         Vacancy vacancy = vacancyRepository.findById(id).orElseThrow();
@@ -57,23 +58,17 @@ public class MainController {
     }
 
     @PostMapping("/selected/{id}")
-    public String setWorker(@AuthenticationPrincipal Customer customer, @PathVariable(value = "id") int id, Model model) {
-        customer.getVacancies().clear();
-        if (customer.getRequests().isEmpty()) {
-            customer.getRequests().add(vacancyRepository.findById(id).get().getAuthor());
-        } else {
-            Set<Customer> set = customer.getRequests();
-            for (Customer cs : set) {
-                if (cs.getUsername().equals(vacancyRepository.findById(id).get().getAuthorName())) {
-                    customer.getRequests().clear();
-                    break;
-                }
-                customer.getRequests().add(vacancyRepository.findById(id).get().getAuthor());
-            }
-        }
-        customer.getVacancies().add(vacancyRepository.findById(id).orElseThrow());
-        customerRepository.save(customer);
+    public String setWorker(@AuthenticationPrincipal Customer customer, @PathVariable(value = "id") int id) {
+        Suggestion suggestion = new Suggestion();
+
+        suggestion.setWorker(customer);
+        suggestion.setVacancy(vacancyRepository.findById(id).orElseThrow());
+        suggestion.setAuthor(vacancyRepository.findById(id).orElseThrow().getAuthor());
+
+        suggestionRepository.save(suggestion);
+
         return "redirect:/hello";
     }
+
 
 }
