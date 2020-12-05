@@ -6,12 +6,15 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
+<header>
+    <div th:insert="~{fragments/header :: header}"></div>
+</header>
 <body>
 <div>
     <label>Название</label>
     <p th:text="${vacancy.getTitle()}"></p>
     <label>Тэги</label>
-    <p th:text="${vacancy.getTag()}"></p>
+    <div th:insert="~{fragments/tags :: tags}"></div>
     <label>Описание</label>
     <p th:text="${vacancy.getText()}"></p>
     <label>Автор</label>

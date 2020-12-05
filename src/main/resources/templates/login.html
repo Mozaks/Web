@@ -4,6 +4,9 @@
 <head>
     <title>Spring Security Example </title>
 </head>
+<header>
+    <div th:insert="~{fragments/header :: header}"></div>
+</header>
 <body>
 <h1>Login</h1>
 <div th:if="${param.error}">

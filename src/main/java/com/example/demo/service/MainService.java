@@ -49,6 +49,8 @@ public class MainService {
 
     public void selected(@AuthenticationPrincipal Customer customer, @PathVariable(value = "id") int id, Model model) throws CustomException {
         Vacancy vacancy = vacancyRepository.findById(id).orElseThrow(() -> new CustomException());
+        List<Tag> lst = tagRepository.findByVacancyId(vacancy.getId());
+        model.addAttribute("lst", lst);
         model.addAttribute("vacancy", vacancy);
         if (customer.getId().equals(vacancy.getAuthor().getId())) {
             model.addAttribute("yourself", false);

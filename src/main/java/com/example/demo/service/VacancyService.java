@@ -24,7 +24,6 @@ public class VacancyService {
     public void addVacancy(@AuthenticationPrincipal Customer customer, @RequestParam String title,
                            @RequestParam String text,
                            @RequestParam String tag) {
-        System.out.println(title + " " + text + " " + tag);
         Vacancy vacancy = new Vacancy();
         vacancy.setTitle(title);
         vacancy.setText(text);
