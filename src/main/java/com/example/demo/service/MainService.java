@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -26,6 +27,8 @@ public class MainService {
     private SuggestionRepository suggestionRepository;
     @Autowired
     private TagRepository tagRepository;
+    @Autowired
+    private MailSender mailSender;
 
     public void mainView(Model model) {
         Iterable<Vacancy> vacancies = vacancyRepository.findAll();
@@ -62,9 +65,20 @@ public class MainService {
     public void setWorker(@AuthenticationPrincipal Customer customer, @PathVariable(value = "id") int id) throws CustomException {
         Suggestion suggestion = new Suggestion();
 
+        Vacancy vacancy = vacancyRepository.findById(id).orElseThrow(() -> new CustomException());
+        Customer author = vacancy.getAuthor();
+
+        if (!StringUtils.isEmpty(author.getEmail())) {
+            String message = String.format(
+                    "Greeting, %s! \n" +
+                            "We have received an offer for one of your vacancies, please check your personal account"
+            );
+            mailSender.send(author.getEmail(), "The offer for the vacancy", message);
+        }
+
         suggestion.setWorker(customer);
-        suggestion.setVacancy(vacancyRepository.findById(id).orElseThrow(() -> new CustomException()));
-        suggestion.setAuthor(vacancyRepository.findById(id).orElseThrow(() -> new CustomException()).getAuthor());
+        suggestion.setVacancy(vacancy);
+        suggestion.setAuthor(author);
 
         suggestionRepository.save(suggestion);
 

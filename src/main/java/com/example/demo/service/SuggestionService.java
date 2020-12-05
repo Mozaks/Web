@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
@@ -24,6 +25,8 @@ public class SuggestionService {
     private CustomerRepository customerRepository;
     @Autowired
     private SuggestionRepository suggestionRepository;
+    @Autowired
+    private MailSender mailSender;
 
     public void showSuggestion(@AuthenticationPrincipal Customer customer, Model model) {
         List<Suggestion> lst = suggestionRepository.findByAuthorId(customer.getId());
@@ -37,15 +40,29 @@ public class SuggestionService {
         model.addAttribute("vacancies", lstVac);
     }
 
-    public void appoint(@PathVariable(value = "idSug") int idSug, @PathVariable(value = "idVac") int idVac, @AuthenticationPrincipal Customer customer) throws CustomException {
-        Vacancy vacancy = vacancyRepository.findById(idVac).orElseThrow(()->new CustomException());
-        vacancy.setWorker(customerRepository.findById(idSug).orElseThrow(()->new CustomException()));
+    public void appoint(@PathVariable(value = "idSug") int idSug, @PathVariable(value = "idVac") int idVac,
+                        @AuthenticationPrincipal Customer customer) throws CustomException {
+        Customer worker = customerRepository.findById(idSug).orElseThrow(() -> new CustomException());
+
+        if (!StringUtils.isEmpty(worker.getEmail())) {
+            String message = String.format(
+                    "Greeting, %s! \n" +
+                            "You were assigned as a performer for the order \n"
+                            +
+                            "Please visit this link: http:://localhost:8080/selected/%s", worker.getUsername(), vacancyRepository.findById(idVac)
+            );
+            mailSender.send(worker.getEmail(), "Assignment to complete an order", message);
+        }
+        Vacancy vacancy = vacancyRepository.findById(idVac).orElseThrow(() -> new CustomException());
+        vacancy.setWorker(customerRepository.findById(idSug).orElseThrow(() -> new CustomException()));
         vacancyRepository.save(vacancy);
 
         Suggestion suggestion = suggestionRepository.findByVacancyId(idVac).stream()
                 .filter(x -> x.getWorker().getId().equals(idSug))
-                .findAny().orElseThrow(()->new CustomException());
+                .findAny().orElseThrow(() -> new CustomException());
 
         suggestionRepository.delete(suggestion);
+
+
     }
 }
