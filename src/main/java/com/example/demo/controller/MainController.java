@@ -1,9 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.Customer;
-import com.example.demo.entity.Vacancy;
-import com.example.demo.repository.SuggestionRepository;
-import com.example.demo.repository.VacancyRepository;
+import com.example.demo.exception.CustomException;
 import com.example.demo.service.MainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -32,15 +30,14 @@ public class MainController {
     }
 
     @GetMapping("/selected/{id}")
-    public String selected(@AuthenticationPrincipal Customer customer, @PathVariable(value = "id") int id, Model model) {
+    public String selected(@AuthenticationPrincipal Customer customer, @PathVariable(value = "id") int id, Model model) throws CustomException {
         mainService.selected(customer, id, model);
         return "current-vacancy";
     }
 
     @PostMapping("/selected/{id}")
-    public String setWorker(@AuthenticationPrincipal Customer customer, @PathVariable(value = "id") int id) {
+    public String setWorker(@AuthenticationPrincipal Customer customer, @PathVariable(value = "id") int id) throws CustomException {
         mainService.setWorker(customer, id);
-
         return "redirect:/hello";
     }
 

@@ -11,7 +11,6 @@ public class Vacancy {
 
     private String title;
     private String text;
-    private String tag;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "worker_id")
@@ -35,14 +34,6 @@ public class Vacancy {
 
     public void setText(String text) {
         this.text = text;
-    }
-
-    public String getTag() {
-        return tag;
-    }
-
-    public void setTag(String tag) {
-        this.tag = tag;
     }
 
     public Customer getAuthor() {

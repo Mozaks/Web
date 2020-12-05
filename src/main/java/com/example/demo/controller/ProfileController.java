@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.Customer;
+import com.example.demo.exception.CustomException;
 import com.example.demo.service.ProfileService;
 import com.example.demo.service.VacancyEditService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,13 +35,13 @@ public class ProfileController {
 
     @PostMapping("vacancy/editor/{id}/edit")
     public String vacancyUpdate(@RequestParam(name = "vacancyTitle", required = false) String title, @RequestParam(name = "vacancyTag", required = false) String tag,
-                                @RequestParam(name = "vacancyText", required = false) String text, @PathVariable(value = "id") int id) {
-        vacancyEditService.vacancyEdit(title, tag, text, id);
+                                @RequestParam(name = "vacancyText", required = false) String text, @PathVariable(value = "id") int id) throws CustomException {
+        vacancyEditService.vacancyEdit(title,  text, id, tag);
         return "redirect:/profile";
     }
 
     @PostMapping("vacancy/editor/{id}/remove")
-    public String vacancyRemove(@PathVariable(value = "id") int id) {
+    public String vacancyRemove(@PathVariable(value = "id") int id) throws CustomException {
         vacancyEditService.vacancyRemove(id);
         return "redirect:/profile";
     }

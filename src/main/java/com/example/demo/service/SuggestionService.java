@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.entity.Customer;
 import com.example.demo.entity.Suggestion;
 import com.example.demo.entity.Vacancy;
+import com.example.demo.exception.CustomException;
 import com.example.demo.repository.CustomerRepository;
 import com.example.demo.repository.SuggestionRepository;
 import com.example.demo.repository.VacancyRepository;
@@ -36,14 +37,14 @@ public class SuggestionService {
         model.addAttribute("vacancies", lstVac);
     }
 
-    public void appoint(@PathVariable(value = "idSug") int idSug, @PathVariable(value = "idVac") int idVac, @AuthenticationPrincipal Customer customer) {
-        Vacancy vacancy = vacancyRepository.findById(idVac).orElseThrow();
-        vacancy.setWorker(customerRepository.findById(idSug).orElseThrow());
+    public void appoint(@PathVariable(value = "idSug") int idSug, @PathVariable(value = "idVac") int idVac, @AuthenticationPrincipal Customer customer) throws CustomException {
+        Vacancy vacancy = vacancyRepository.findById(idVac).orElseThrow(()->new CustomException());
+        vacancy.setWorker(customerRepository.findById(idSug).orElseThrow(()->new CustomException()));
         vacancyRepository.save(vacancy);
 
         Suggestion suggestion = suggestionRepository.findByVacancyId(idVac).stream()
                 .filter(x -> x.getWorker().getId().equals(idSug))
-                .findAny().orElseThrow();
+                .findAny().orElseThrow(()->new CustomException());
 
         suggestionRepository.delete(suggestion);
     }

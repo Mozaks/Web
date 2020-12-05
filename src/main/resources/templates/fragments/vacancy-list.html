@@ -24,7 +24,7 @@
         <tr th:each="vacancy : ${vacancies}">
             <td th:text="${vacancy.getTitle()}"></td>
             <td th:text="${vacancy.getText()}"></td>
-            <td th:text="${vacancy.getTag()}"></td>
+            <td th:insert="~{fragments/tags :: tags}"></td>
             <td th:text="${vacancy.getAuthorName()}"></td>
             <td th:text="${vacancy.getWorkerName()}"></td>
             <td><a th:href="@{'/profile/vacancy/editor/' + ${vacancy.getId()} + '/edit'}">Редактировать</a></td>

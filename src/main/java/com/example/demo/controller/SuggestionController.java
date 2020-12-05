@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.Customer;
+import com.example.demo.exception.CustomException;
 import com.example.demo.service.SuggestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -24,7 +25,7 @@ public class SuggestionController {
     }
 
     @PostMapping("/appoint/{idSug}/vacancy/{idVac}")
-    public String appoint(@PathVariable(value = "idSug") int idSug, @PathVariable(value = "idVac") int idVac, @AuthenticationPrincipal Customer customer) {
+    public String appoint(@PathVariable(value = "idSug") int idSug, @PathVariable(value = "idVac") int idVac, @AuthenticationPrincipal Customer customer) throws CustomException {
         suggestionService.appoint(idSug, idVac, customer);
         return "redirect:/suggestion";
     }

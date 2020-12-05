@@ -15,7 +15,8 @@
     <button type="submit">Найти</button>
 </form>
 <div th:each="vacancy : ${vacancies}">
-    <p th:text="'Название ' +${vacancy.getTitle()}  + ' тэг - ' + ${vacancy.getTag()} + ', исполнитель - ' + ${vacancy.getWorkerName()}"></p>
+    <p th:text="'Название ' +${vacancy.getTitle()}  + ', исполнитель - ' + ${vacancy.getWorkerName()}"></p>
+    <div th:replace="~{fragments/tags :: tags}"></div>
     <a th:href="@{'/selected/' +${vacancy.getId()}}">Просмотреть вакансию</a>
 </div>
 </body>
