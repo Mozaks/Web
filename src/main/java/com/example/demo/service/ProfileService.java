@@ -23,11 +23,15 @@ public class ProfileService {
     public void profileView(@AuthenticationPrincipal Customer customer, Model model) {
         Iterable<Vacancy> vacancies = vacancyRepository.findByAuthorId(customer.getId());
         List<List<Tag>> lst = new ArrayList<>();
+
         for (Vacancy vacancy : vacancies) {
             lst.add(tagRepository.findByVacancyId(vacancy.getId()));
         }
+
         model.addAttribute("vacancies", vacancies);
+
         model.addAttribute("lst", lst);
+
         model.addAttribute("user", customer);
     }
 }

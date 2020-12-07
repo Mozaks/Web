@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.domain.ServerUrl;
 import com.example.demo.entity.Customer;
 import com.example.demo.repository.CustomerRepository;
 import com.example.demo.role.Role;
@@ -43,10 +44,11 @@ public class CustomerService implements UserDetailsService {
         if (!StringUtils.isEmpty(customer.getEmail())) {
             String message = String.format(
                     "Greeting, %s! \n" +
-                            "Please visit this link: http:://localhost:8080/activate/%s", customer.getUsername(), customer.getActivationCode()
+                            "Please visit this link: " + ServerUrl.URL + "activate/%s", customer.getUsername(), customer.getActivationCode()
             );
-            mailSender.send(customer.getEmail(), "Activaction code", message);
+            mailSender.send(customer.getEmail(), "Activation code", message);
         }
+
         return true;
     }
 

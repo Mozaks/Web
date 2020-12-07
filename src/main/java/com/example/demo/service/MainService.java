@@ -33,28 +33,35 @@ public class MainService {
     public void mainView(Model model) {
         Iterable<Vacancy> vacancies = vacancyRepository.findAll();
         List<List<Tag>> lst = new ArrayList<>();
+
         for (Vacancy vacancy : vacancies) {
             lst.add(tagRepository.findByVacancyId(vacancy.getId()));
         }
+
         model.addAttribute("vacancies", vacancies);
+
         model.addAttribute("lst", lst);
     }
 
     public void filter(@RequestParam String filter, Model model) {
         List<Vacancy> vacancyList;
+
         if (!filter.isEmpty()) {
             vacancyList = vacancyRepository.findByTitle(filter);
         } else {
             vacancyList = vacancyRepository.findAll();
         }
+
         model.addAttribute("vacancies", vacancyList);
     }
 
     public void selected(@AuthenticationPrincipal Customer customer, @PathVariable(value = "id") int id, Model model) throws CustomException {
         Vacancy vacancy = vacancyRepository.findById(id).orElseThrow(() -> new CustomException());
         List<Tag> lst = tagRepository.findByVacancyId(vacancy.getId());
+
         model.addAttribute("lst", lst);
         model.addAttribute("vacancy", vacancy);
+
         if (customer.getId().equals(vacancy.getAuthor().getId())) {
             model.addAttribute("yourself", false);
         } else {
@@ -63,7 +70,6 @@ public class MainService {
     }
 
     public void setWorker(@AuthenticationPrincipal Customer customer, @PathVariable(value = "id") int id) throws CustomException {
-        Suggestion suggestion = new Suggestion();
 
         Vacancy vacancy = vacancyRepository.findById(id).orElseThrow(() -> new CustomException());
         Customer author = vacancy.getAuthor();
@@ -72,13 +78,17 @@ public class MainService {
             String message = String.format(
                     "Greeting, %s! \n" +
                             "We have received an offer for one of your vacancies, please check your personal account"
-            );
+                    , customer.getUsername());
             mailSender.send(author.getEmail(), "The offer for the vacancy", message);
         }
 
-        suggestion.setWorker(customer);
-        suggestion.setVacancy(vacancy);
-        suggestion.setAuthor(author);
+        Suggestion.Builder builder = Suggestion.Builder();
+        Suggestion suggestion =
+                builder
+                        .setWorker(customer)
+                        .setVacancy(vacancy)
+                        .setAuthor(author)
+                        .build();
 
         suggestionRepository.save(suggestion);
 

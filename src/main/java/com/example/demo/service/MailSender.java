@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.domain.SimpleMailMessageBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -14,14 +15,15 @@ public class MailSender {
     @Value("${spring.mail.username}")
     private String username;
 
-    public void send(String mailTo, String subject, String message){
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
+    public void send(String mailTo, String subject, String message) {
+        SimpleMailMessageBuilder mailMessageBuilder = new SimpleMailMessageBuilder();
 
-        mailMessage.setFrom(username);
-        mailMessage.setTo(mailTo);
-        mailMessage.setSubject(subject);
-        mailMessage.setText(message);
-
-        mailSender.send(mailMessage);
+        mailSender.send(
+                mailMessageBuilder
+                        .setFrom(username)
+                        .setText(mailTo)
+                        .setSubject(subject)
+                        .setText(message)
+                        .build());
     }
 }

@@ -33,6 +33,7 @@ public class VacancyEditService {
         Optional<Vacancy> vacancy = vacancyRepository.findById(id);
         ArrayList<Vacancy> lst = new ArrayList<>();
         vacancy.ifPresent(lst::add);
+
         model.addAttribute("lst", lst);
     }
 
@@ -41,15 +42,22 @@ public class VacancyEditService {
         Vacancy vacancy = vacancyRepository.findById(id).orElseThrow(() -> new CustomException());
         vacancy.setTitle(title);
         vacancy.setText(text);
+
         vacancyRepository.save(vacancy);
+
+        Tag.Builder builder = Tag.Builder();
+
         List<Tag> tagList = tagRepository.findByVacancyId(vacancy.getId());
-        List<String> tags = Arrays.stream(tag.split(",")).collect(Collectors.toList());
+        List<String> tags = Arrays.stream(tag.split(","))
+                .collect(Collectors.toList());
+
         for (String t : tags) {
             if (!tagList.contains(t)) {
-                Tag tagTmp = new Tag();
-                tagTmp.setTag(t);
-                tagTmp.setVacancy(vacancy);
-                tagRepository.save(tagTmp);
+                tagRepository.save(
+                        builder
+                                .setTag(tag)
+                                .setVacancy(vacancy)
+                                .build());
             }
         }
 
@@ -57,9 +65,11 @@ public class VacancyEditService {
 
     public void vacancyRemove(@PathVariable(value = "id") int id) throws CustomException {
         List<Tag> lst = tagRepository.findByVacancyId(id);
+
         for (Tag tag : lst) {
             tagRepository.delete(tag);
         }
+
         Vacancy vacancy = vacancyRepository.findById(id).orElseThrow(() -> new CustomException());
         vacancyRepository.delete(vacancy);
     }
