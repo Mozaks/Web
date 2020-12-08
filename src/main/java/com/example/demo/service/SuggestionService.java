@@ -29,7 +29,27 @@ public class SuggestionService {
     @Autowired
     private MailSender mailSender;
 
-    public void showSuggestion(@AuthenticationPrincipal Customer customer, Model model) {
+    public void showSuggestionToFreelancer(@AuthenticationPrincipal Customer customer, Model model) {
+        List<Suggestion> lst = suggestionRepository.findByWorkerId(customer.getId());
+
+        List<Customer> lstAuthor =
+                lst.stream()
+                        .map(sug -> sug.getAuthor())
+                        .collect(Collectors.toList());
+
+        List<Vacancy> lstVac =
+                lst.stream()
+                        .map(sug -> sug.getVacancy())
+                        .collect(Collectors.toList());
+
+        model.addAttribute("authors", lstAuthor);
+
+        model.addAttribute("vacancies", lstVac);
+
+        model.addAttribute("user", customer);
+    }
+
+    public void showSuggestionToNotFreelancer(@AuthenticationPrincipal Customer customer, Model model) {
         List<Suggestion> lst = suggestionRepository.findByAuthorId(customer.getId());
 
         List<Customer> lstWork =
@@ -45,7 +65,11 @@ public class SuggestionService {
         model.addAttribute("workers", lstWork);
 
         model.addAttribute("vacancies", lstVac);
+
+        model.addAttribute("user", customer);
+
     }
+
 
     public void appoint(@PathVariable(value = "idSug") int idSug, @PathVariable(value = "idVac") int idVac,
                         @AuthenticationPrincipal Customer customer) throws CustomException {
@@ -56,7 +80,8 @@ public class SuggestionService {
                     "Greeting, %s! \n" +
                             "You were assigned as a performer for the order \n"
                             +
-                            "Please visit this link: " + ServerUrl.URL + "selected/%s", worker.getUsername(), vacancyRepository.findById(idVac)
+                            "Please visit this link: " + ServerUrl.URL + "selected/%s", worker.getUsername(),
+                    vacancyRepository.findById(idVac).orElseThrow(() -> new CustomException()).getId().toString()
             );
             mailSender.send(worker.getEmail(), "Assignment to complete an order", message);
         }

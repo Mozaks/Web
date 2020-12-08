@@ -24,34 +24,29 @@ public class VacancyService {
     public void addVacancy(@AuthenticationPrincipal Customer customer, @RequestParam String title,
                            @RequestParam String text,
                            @RequestParam String tag) {
-        Vacancy.Builder builderVacancy = Vacancy.Builder();
-
-        Vacancy vacancy =
-                builderVacancy
-                        .setText(text)
-                        .setTitle(title)
-                        .setAuthor(customer)
-                        .build();
+        Vacancy vacancy = new
+                Vacancy.Builder()
+                .setText(text)
+                .setTitle(title)
+                .setAuthor(customer)
+                .build();
 
         vacancyRepository.save(vacancy);
 
-        Tag.Builder builderTag = Tag.Builder();
 
         if (tag.contains(",")) {
             List<String> tags = Arrays.stream(tag.split(",")).collect(Collectors.toList());
             for (String t : tags) {
-                tagRepository.save(
-                        builderTag
-                                .setTag(tag)
-                                .setVacancy(vacancy)
-                                .build());
+                tagRepository.save(new Tag.Builder()
+                        .setTag(tag)
+                        .setVacancy(vacancy)
+                        .build());
             }
         } else {
-            tagRepository.save(
-                    builderTag
-                            .setTag(tag)
-                            .setVacancy(vacancy)
-                            .build());
+            tagRepository.save(new Tag.Builder()
+                    .setTag(tag)
+                    .setVacancy(vacancy)
+                    .build());
         }
     }
 }

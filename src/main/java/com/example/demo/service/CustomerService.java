@@ -4,16 +4,20 @@ import com.example.demo.domain.ServerUrl;
 import com.example.demo.entity.Customer;
 import com.example.demo.repository.CustomerRepository;
 import com.example.demo.role.Role;
+import org.hibernate.mapping.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class CustomerService implements UserDetailsService {
@@ -35,9 +39,6 @@ public class CustomerService implements UserDetailsService {
         }
 
         customer.setActive(true);
-        Set<Role> roles = new HashSet<>();
-        roles.add(Role.USER);
-        customer.setRoles(roles);
         customer.setActivationCode(UUID.randomUUID().toString());
         customerRepository.save(customer);
 

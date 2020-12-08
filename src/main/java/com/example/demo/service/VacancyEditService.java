@@ -45,19 +45,16 @@ public class VacancyEditService {
 
         vacancyRepository.save(vacancy);
 
-        Tag.Builder builder = Tag.Builder();
-
         List<Tag> tagList = tagRepository.findByVacancyId(vacancy.getId());
         List<String> tags = Arrays.stream(tag.split(","))
                 .collect(Collectors.toList());
 
         for (String t : tags) {
             if (!tagList.contains(t)) {
-                tagRepository.save(
-                        builder
-                                .setTag(tag)
-                                .setVacancy(vacancy)
-                                .build());
+                tagRepository.save(new Tag.Builder()
+                        .setTag(tag)
+                        .setVacancy(vacancy)
+                        .build());
             }
         }
 

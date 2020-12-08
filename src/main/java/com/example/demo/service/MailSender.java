@@ -21,7 +21,7 @@ public class MailSender {
         mailSender.send(
                 mailMessageBuilder
                         .setFrom(username)
-                        .setText(mailTo)
+                        .setTo(mailTo)
                         .setSubject(subject)
                         .setText(message)
                         .build());

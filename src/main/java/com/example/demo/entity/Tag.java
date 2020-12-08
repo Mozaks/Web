@@ -48,15 +48,11 @@ public class Tag {
         this.tag = tag;
     }
 
-    public static Builder Builder() {
-        return new Tag().Builder();
-    }
-
     public static class Builder {
 
-        Tag tag;
+        private Tag tag;
 
-        private Builder() {
+        public Builder() {
             this.tag = new Tag();
         }
 

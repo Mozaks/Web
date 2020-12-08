@@ -79,16 +79,11 @@ public class Vacancy {
     public String getWorkerName() {
         return worker != null ? worker.getUsername() : "исполнителя нет";
     }
-
-    public static Builder Builder() {
-        return new Vacancy().Builder();
-    }
-
     public static class Builder {
 
-        Vacancy vacancy;
+        private Vacancy vacancy;
 
-        private Builder() {
+        public Builder() {
             this.vacancy = new Vacancy();
         }
 

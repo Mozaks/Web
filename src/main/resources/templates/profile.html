@@ -10,8 +10,13 @@
 </header>
 <body th:object="${user}">
 <div th:text="${user.getUsername()}"></div>
-<div th:insert="~{fragments/vacancy-list :: vacancy-list}"></div>
-<button onclick="window.location.href = '/vacancy';">Добавить вакансию</button>
-<button onclick="window.location.href = '/suggestion';">Просмотреть предложения на мои вакансии</button>
+<div th:if="${user.getRoles().contains(T(com.example.demo.role.Role).USER)}">
+    <div th:insert="~{fragments/vacancy-list :: vacancy-list}"></div>
+    <button onclick="window.location.href = '/vacancy';">Добавить вакансию</button>
+</div>
+<div th:if="${user.getRoles().contains(T(com.example.demo.role.Role).ADMIN)}">
+    <button onclick="window.location.href = '/customer';">Список пользователей</button>
+</div>
+<button onclick="window.location.href = '/suggestion';">Просмотреть предложения на вакансии</button>
 </body>
 </html>

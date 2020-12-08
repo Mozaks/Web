@@ -74,21 +74,12 @@ public class MainService {
         Vacancy vacancy = vacancyRepository.findById(id).orElseThrow(() -> new CustomException());
         Customer author = vacancy.getAuthor();
 
-        if (!StringUtils.isEmpty(author.getEmail())) {
-            String message = String.format(
-                    "Greeting, %s! \n" +
-                            "We have received an offer for one of your vacancies, please check your personal account"
-                    , customer.getUsername());
-            mailSender.send(author.getEmail(), "The offer for the vacancy", message);
-        }
-
-        Suggestion.Builder builder = Suggestion.Builder();
-        Suggestion suggestion =
-                builder
-                        .setWorker(customer)
-                        .setVacancy(vacancy)
-                        .setAuthor(author)
-                        .build();
+        Suggestion suggestion = new
+                Suggestion.Builder()
+                .setWorker(customer)
+                .setVacancy(vacancy)
+                .setAuthor(author)
+                .build();
 
         suggestionRepository.save(suggestion);
 

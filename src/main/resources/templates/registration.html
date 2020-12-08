@@ -24,6 +24,10 @@
     <input type="text" name="firstName" placeholder="Отчество">
     <input type="password" name="password" placeholder="Пароль">
     <input type="email" name="email" placeholder="Почта">
+    <div>
+        <p><input name="roles" type="radio" th:value="${T(com.example.demo.role.Role).USER}" checked> user</p>
+        <p><input name="roles" type="radio" th:value="${T(com.example.demo.role.Role).FREELANCER}">freelancer</p>
+    </div>
     <div><input type="submit" value="Registration"/></div>
 </form>
 </body>

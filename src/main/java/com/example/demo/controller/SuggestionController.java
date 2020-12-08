@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.Customer;
 import com.example.demo.exception.CustomException;
+import com.example.demo.role.Role;
 import com.example.demo.service.SuggestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,7 +21,11 @@ public class SuggestionController {
 
     @GetMapping()
     public String vacancy(@AuthenticationPrincipal Customer customer, Model model) {
-        suggestionService.showSuggestion(customer, model);
+        if (customer.getRoles().contains(Role.FREELANCER)) {
+            suggestionService.showSuggestionToFreelancer(customer, model);
+        } else {
+            suggestionService.showSuggestionToNotFreelancer(customer, model);
+        }
         return "suggestion";
     }
 

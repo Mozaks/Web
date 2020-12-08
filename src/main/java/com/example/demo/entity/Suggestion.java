@@ -63,14 +63,11 @@ public class Suggestion {
         this.worker = worker;
     }
 
-    public static Builder Builder() {
-        return new Suggestion().Builder();
-    }
     public static class Builder {
 
-        Suggestion suggestion;
+        private Suggestion suggestion;
 
-        private Builder() {
+        public Builder() {
             this.suggestion = new Suggestion();
         }
 

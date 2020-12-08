@@ -155,15 +155,12 @@ public class Customer implements UserDetails {
         this.activationCode = activationCode;
     }
 
-    public static Builder Builder() {
-        return new Customer().Builder();
-    }
 
     public static class Builder {
 
-        Customer customer;
+        private Customer customer;
 
-        private Builder() {
+        public Builder() {
             this.customer = new Customer();
         }
 

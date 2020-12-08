@@ -5,6 +5,7 @@ import com.example.demo.entity.Tag;
 import com.example.demo.entity.Vacancy;
 import com.example.demo.repository.TagRepository;
 import com.example.demo.repository.VacancyRepository;
+import com.example.demo.role.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
@@ -33,5 +34,6 @@ public class ProfileService {
         model.addAttribute("lst", lst);
 
         model.addAttribute("user", customer);
+
     }
 }
