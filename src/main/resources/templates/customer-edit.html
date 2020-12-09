@@ -12,14 +12,11 @@
 <body>
 Редактор пользователя
 <form th:action="@{'/customer/' + ${customer.getId()} + '/edit'}" method="post" th:object="${customer}">
-    <input type="text" name="customerName" th:placeholder="${customer.getUsername()}" th:object="${customer}">
+    <input type="text" name="customerName" th:placeholder="${customer.getUsername()}">
     <ul>
-        <li th:each="role : ${T(com.example.demo.role.Role).values()}">
-            <div>
-                <input type="checkbox" name="roles" th:field="*{roles}" th:value="${role.name()}"/>
-                <label th:text="${role.name()}"></label>
-            </div>
-        </li>
+        <p><input name="roles" type="radio" th:value="${T(com.example.demo.role.Role).USER}" checked> User</p>
+        <p><input name="roles" type="radio" th:value="${T(com.example.demo.role.Role).FREELANCER}">Freelancer</p>
+        <p><input name="roles" type="radio" th:value="${T(com.example.demo.role.Role).ADMIN}">Admin</p>
     </ul>
     <button type=" submit">Отправить</button>
 </form>

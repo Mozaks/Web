@@ -36,7 +36,7 @@ public class ProfileController {
     @PostMapping("vacancy/editor/{id}/edit")
     public String vacancyUpdate(@RequestParam(name = "vacancyTitle", required = false) String title, @RequestParam(name = "vacancyTag", required = false) String tag,
                                 @RequestParam(name = "vacancyText", required = false) String text, @PathVariable(value = "id") int id) throws CustomException {
-        vacancyEditService.vacancyEdit(title,  text, id, tag);
+        vacancyEditService.vacancyEdit(title, text, id, tag);
         return "redirect:/profile";
     }
 
@@ -46,5 +46,25 @@ public class ProfileController {
         return "redirect:/profile";
     }
 
+    @GetMapping("/edit")
+    public String profileEditView(@AuthenticationPrincipal Customer customer, Model model) {
+        profileService.profileEditView(customer, model);
+        return "profile-edit";
+    }
+
+    @PostMapping("/edit")
+    public String profileEdit(@AuthenticationPrincipal Customer customer, Model model,
+                              @RequestParam(name = "newEmail", required = false) String newEmail,
+                              @RequestParam(name = "newPassword", required = false) String newPassword,
+                              @RequestParam(name = "newUsername", required = false) String newUsername) {
+        profileService.profileEdit(customer, model, newEmail, newPassword, newUsername);
+        return "redirect:/profile/edit";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String profileEditViewFromMail(@PathVariable(name = "id") int id, @AuthenticationPrincipal Customer customer, Model model) {
+        profileService.profileEditViewFromMail(id, customer, model);
+        return "profile-edit";
+    }
 
 }

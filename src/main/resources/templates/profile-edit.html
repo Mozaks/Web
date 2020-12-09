@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Hello World!</title>
+</head>
+<header>
+    <div th:insert="~{fragments/header :: header}"></div>
+</header>
+<body>
+<div th:if="${message}">
+    <p th:text="${message}"></p>
+</div>
+    <form th:action="@{/profile/edit}" method="post" th:object="${customer}">
+        <p>Новая почта</p>
+        <input type="email" name="newEmail" th:placeholder="${customer.getEmail()}">
+        <p>Новый пароль</p>
+        <input type="text" name="newPassword" th:placeholder="${customer.getPassword()}">
+        <p>Новое имя пользователя</p>
+        <input type="text" name="newUsername" th:placeholder="${customer.getUsername()}">
+        <button type="submit">Изменить данные</button>
+    </form>
+</body>
+</html>

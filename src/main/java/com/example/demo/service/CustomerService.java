@@ -38,7 +38,7 @@ public class CustomerService implements UserDetailsService {
             return false;
         }
 
-        customer.setActive(true);
+        customer.setActive(false);
         customer.setActivationCode(UUID.randomUUID().toString());
         customerRepository.save(customer);
 
@@ -61,7 +61,7 @@ public class CustomerService implements UserDetailsService {
         }
 
         customer.setActivationCode(null);
-
+        customer.setActive(true);
         customerRepository.save(customer);
 
         return true;
