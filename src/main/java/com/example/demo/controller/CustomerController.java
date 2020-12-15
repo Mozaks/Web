@@ -1,10 +1,12 @@
 package com.example.demo.controller;
 
+import com.example.demo.entity.Customer;
 import com.example.demo.exception.CustomException;
 import com.example.demo.role.Role;
 import com.example.demo.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -24,14 +26,14 @@ public class CustomerController {
     }
 
     @GetMapping("{id}/edit")
-    public String customerEdit(@PathVariable(value = "id") int id, Model model) throws CustomException {
+    public String customerEdit(@AuthenticationPrincipal Customer customer, @PathVariable(value = "id") int id, Model model) throws CustomException {
         adminService.selectedCustomerView(id, model);
         return "customer-edit";
     }
 
     @PostMapping("{id}/edit")
     public String saveCustomer(@RequestParam String customerName, @RequestParam(name = "roles") Role role, @PathVariable(value = "id") int id) throws CustomException {
-        adminService.saveCustomer(customerName, role, id);
+        adminService.updateCustomer(customerName, role, id);
         return "redirect:/customer";
     }
 

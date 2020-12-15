@@ -17,9 +17,9 @@ import java.util.stream.Collectors;
 @Service
 public class VacancyService {
     @Autowired
-    VacancyRepository vacancyRepository;
+    private VacancyRepository vacancyRepository;
     @Autowired
-    TagRepository tagRepository;
+    private TagRepository tagRepository;
 
     public void addVacancy(@AuthenticationPrincipal Customer customer, @RequestParam String title,
                            @RequestParam String text,
@@ -35,7 +35,9 @@ public class VacancyService {
 
 
         if (tag.contains(",")) {
-            List<String> tags = Arrays.stream(tag.split(",")).collect(Collectors.toList());
+            List<String> tags =
+                    Arrays.stream(tag.split(","))
+                            .collect(Collectors.toList());
             for (String t : tags) {
                 tagRepository.save(new Tag.Builder()
                         .setTag(tag)

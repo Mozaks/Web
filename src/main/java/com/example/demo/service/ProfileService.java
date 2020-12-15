@@ -2,13 +2,9 @@ package com.example.demo.service;
 
 import com.example.demo.domain.ServerUrl;
 import com.example.demo.entity.Customer;
-import com.example.demo.entity.Tag;
-import com.example.demo.entity.Vacancy;
-import com.example.demo.exception.CustomException;
 import com.example.demo.repository.CustomerRepository;
 import com.example.demo.repository.TagRepository;
 import com.example.demo.repository.VacancyRepository;
-import com.example.demo.role.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
@@ -17,8 +13,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -32,25 +26,14 @@ public class ProfileService {
     @Autowired
     private CustomerRepository customerRepository;
 
-    private static Customer customerEdit;
+    private static final Customer customerEdit;
 
     static {
         customerEdit = new Customer();
     }
 
     public void profileView(@AuthenticationPrincipal Customer customer, Model model) {
-        Iterable<Vacancy> vacancies = vacancyRepository.findByAuthorId(customer.getId());
-        List<List<Tag>> lst = new ArrayList<>();
-
-        for (Vacancy vacancy : vacancies) {
-            lst.add(tagRepository.findByVacancyId(vacancy.getId()));
-        }
-
-        model.addAttribute("vacancies", vacancies);
-
-        model.addAttribute("lst", lst);
-
-        model.addAttribute("user", customer);
+        ServicesUtil.showVacanciesAndTags(vacancyRepository, customer, tagRepository, model, true);
     }
 
     public void profileEditView(@AuthenticationPrincipal Customer customer, Model model) {
@@ -96,8 +79,8 @@ public class ProfileService {
             }
             customer.setActivationCode(null);
             customerRepository.save(customer);
-            model.addAttribute("message", "Your data was changed successfully");
-            model.addAttribute("customer", customer);
+            model.addAttribute("message", "Your data was changed successfully")
+                    .addAttribute("customer", customer);
         }
     }
 }

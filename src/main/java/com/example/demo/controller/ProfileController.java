@@ -2,6 +2,8 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.Customer;
 import com.example.demo.exception.CustomException;
+import com.example.demo.exception.IllegalIdException;
+import com.example.demo.repository.VacancyRepository;
 import com.example.demo.service.ProfileService;
 import com.example.demo.service.VacancyEditService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +16,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/profile")
 public class ProfileController {
     @Autowired
-    VacancyEditService vacancyEditService;
+    private VacancyEditService vacancyEditService;
     @Autowired
-    ProfileService profileService;
+    private ProfileService profileService;
+    @Autowired
+    private VacancyRepository vacancyRepository;
 
     @GetMapping
     public String profile(@AuthenticationPrincipal Customer customer, Model model) {
@@ -25,25 +29,37 @@ public class ProfileController {
     }
 
     @GetMapping("vacancy/editor/{id}/edit")
-    public String vacancyEdit(@PathVariable(value = "id") int id, Model model) {
-        if (!vacancyEditService.isVacancyExists(id)) {
-            return "redirect:/profile";
+    public String vacancyEdit(@AuthenticationPrincipal Customer customer, @PathVariable(value = "id") int id, Model model) throws CustomException, IllegalIdException {
+        if (isWrongCustomer(customer, id)) {
+            throw new IllegalIdException();
+        } else {
+            if (!vacancyEditService.isVacancyExists(id)) {
+                return "redirect:/profile";
+            }
+            vacancyEditService.vacancyEditView(id, model);
+            return "vacancy-edit";
         }
-        vacancyEditService.vacancyEditView(id, model);
-        return "vacancy-edit";
     }
 
     @PostMapping("vacancy/editor/{id}/edit")
-    public String vacancyUpdate(@RequestParam(name = "vacancyTitle", required = false) String title, @RequestParam(name = "vacancyTag", required = false) String tag,
-                                @RequestParam(name = "vacancyText", required = false) String text, @PathVariable(value = "id") int id) throws CustomException {
-        vacancyEditService.vacancyEdit(title, text, id, tag);
-        return "redirect:/profile";
+    public String vacancyUpdate(@AuthenticationPrincipal Customer customer, @RequestParam(name = "vacancyTitle", required = false) String title, @RequestParam(name = "vacancyTag", required = false) String tag,
+                                @RequestParam(name = "vacancyText", required = false) String text, @PathVariable(value = "id") int id) throws CustomException, IllegalIdException {
+        if (isWrongCustomer(customer, id)) {
+            throw new IllegalIdException();
+        } else {
+            vacancyEditService.vacancyEdit(title, text, id, tag);
+            return "redirect:/profile";
+        }
     }
 
     @PostMapping("vacancy/editor/{id}/remove")
-    public String vacancyRemove(@PathVariable(value = "id") int id) throws CustomException {
-        vacancyEditService.vacancyRemove(id);
-        return "redirect:/profile";
+    public String vacancyRemove(@AuthenticationPrincipal Customer customer, @PathVariable(value = "id") int id) throws CustomException, IllegalIdException {
+        if (isWrongCustomer(customer, id)) {
+            throw new IllegalIdException();
+        } else {
+            vacancyEditService.vacancyRemove(id);
+            return "redirect:/profile";
+        }
     }
 
     @GetMapping("/edit")
@@ -62,9 +78,17 @@ public class ProfileController {
     }
 
     @GetMapping("/edit/{id}")
-    public String profileEditViewFromMail(@PathVariable(name = "id") int id, @AuthenticationPrincipal Customer customer, Model model) {
-        profileService.profileEditViewFromMail(id, customer, model);
-        return "profile-edit";
+    public String profileEditViewFromMail(@PathVariable(name = "id") int id, @AuthenticationPrincipal Customer customer, Model model) throws IllegalIdException, CustomException {
+        if (isWrongCustomer(customer, id)) {
+            throw new IllegalIdException();
+        } else {
+            profileService.profileEditViewFromMail(id, customer, model);
+            return "profile-edit";
+        }
+    }
+
+    private boolean isWrongCustomer(Customer customer, int id) throws CustomException {
+        return !customer.getId().equals(vacancyRepository.findById(id).orElseThrow(() -> new CustomException()).getAuthor().getId());
     }
 
 }

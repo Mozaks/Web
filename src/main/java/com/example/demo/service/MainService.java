@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -38,9 +37,10 @@ public class MainService {
             lst.add(tagRepository.findByVacancyId(vacancy.getId()));
         }
 
-        model.addAttribute("vacancies", vacancies);
+        model
+                .addAttribute("vacancies", vacancies)
+                .addAttribute("lst", lst);
 
-        model.addAttribute("lst", lst);
     }
 
     public void filter(@RequestParam String filter, Model model) {
@@ -59,13 +59,12 @@ public class MainService {
         Vacancy vacancy = vacancyRepository.findById(id).orElseThrow(() -> new CustomException());
         List<Tag> lst = tagRepository.findByVacancyId(vacancy.getId());
 
-        model.addAttribute("lst", lst);
-        model.addAttribute("vacancy", vacancy);
+        model.addAttribute("lst", lst).addAttribute("vacancy", vacancy).addAttribute("user", customer);
 
         if (customer.getId().equals(vacancy.getAuthor().getId())) {
-            model.addAttribute("yourself", false);
-        } else {
             model.addAttribute("yourself", true);
+        } else {
+            model.addAttribute("yourself", false);
         }
     }
 

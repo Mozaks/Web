@@ -50,7 +50,7 @@ public class Tag {
 
     public static class Builder {
 
-        private Tag tag;
+        private final Tag tag;
 
         public Builder() {
             this.tag = new Tag();

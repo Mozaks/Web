@@ -42,11 +42,11 @@ public class SuggestionService {
                         .map(sug -> sug.getVacancy())
                         .collect(Collectors.toList());
 
-        model.addAttribute("authors", lstAuthor);
+        model
+                .addAttribute("authors", lstAuthor)
+                .addAttribute("vacancies", lstVac)
+                .addAttribute("user", customer);
 
-        model.addAttribute("vacancies", lstVac);
-
-        model.addAttribute("user", customer);
     }
 
     public void showSuggestionToNotFreelancer(@AuthenticationPrincipal Customer customer, Model model) {
@@ -62,11 +62,10 @@ public class SuggestionService {
                         .map(sug -> sug.getVacancy())
                         .collect(Collectors.toList());
 
-        model.addAttribute("workers", lstWork);
-
-        model.addAttribute("vacancies", lstVac);
-
-        model.addAttribute("user", customer);
+        model
+                .addAttribute("workers", lstWork)
+                .addAttribute("vacancies", lstVac)
+                .addAttribute("user", customer);
 
     }
 
@@ -91,12 +90,12 @@ public class SuggestionService {
 
         vacancyRepository.save(vacancy);
 
-        Suggestion suggestion = suggestionRepository.findByVacancyId(idVac).stream()
-                .filter(sug -> sug.getWorker().getId().equals(idSug))
-                .findAny().orElseThrow(() -> new CustomException());
+        Suggestion suggestion =
+                suggestionRepository.findByVacancyId(idVac).stream()
+                        .filter(sug -> sug.getWorker().getId().equals(idSug))
+                        .findAny().orElseThrow(() -> new CustomException());
 
         suggestionRepository.delete(suggestion);
-
 
     }
 }

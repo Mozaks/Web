@@ -158,7 +158,7 @@ public class Customer implements UserDetails {
 
     public static class Builder {
 
-        private Customer customer;
+        private final Customer customer;
 
         public Builder() {
             this.customer = new Customer();

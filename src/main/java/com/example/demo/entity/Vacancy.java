@@ -79,9 +79,10 @@ public class Vacancy {
     public String getWorkerName() {
         return worker != null ? worker.getUsername() : "исполнителя нет";
     }
+
     public static class Builder {
 
-        private Vacancy vacancy;
+        private final Vacancy vacancy;
 
         public Builder() {
             this.vacancy = new Vacancy();

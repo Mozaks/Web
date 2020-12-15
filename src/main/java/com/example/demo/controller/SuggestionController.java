@@ -2,6 +2,8 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.Customer;
 import com.example.demo.exception.CustomException;
+import com.example.demo.exception.IllegalIdException;
+import com.example.demo.repository.VacancyRepository;
 import com.example.demo.role.Role;
 import com.example.demo.service.SuggestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class SuggestionController {
     @Autowired
     private SuggestionService suggestionService;
+    @Autowired
+    private VacancyRepository vacancyRepository;
 
     @GetMapping()
     public String vacancy(@AuthenticationPrincipal Customer customer, Model model) {
@@ -30,9 +34,13 @@ public class SuggestionController {
     }
 
     @PostMapping("/appoint/{idSug}/vacancy/{idVac}")
-    public String appoint(@PathVariable(value = "idSug") int idSug, @PathVariable(value = "idVac") int idVac, @AuthenticationPrincipal Customer customer) throws CustomException {
-        suggestionService.appoint(idSug, idVac, customer);
-        return "redirect:/suggestion";
+    public String appoint(@PathVariable(value = "idSug") int idSug, @PathVariable(value = "idVac") int idVac, @AuthenticationPrincipal Customer customer) throws CustomException, IllegalIdException {
+        if (customer.getId().equals(vacancyRepository.findById(idVac).orElseThrow(() -> new CustomException()).getAuthor().getId())) {
+            throw new IllegalIdException();
+        } else {
+            suggestionService.appoint(idSug, idVac, customer);
+            return "redirect:/suggestion";
+        }
     }
 
 }

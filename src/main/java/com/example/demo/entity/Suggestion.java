@@ -65,7 +65,7 @@ public class Suggestion {
 
     public static class Builder {
 
-        private Suggestion suggestion;
+        private final Suggestion suggestion;
 
         public Builder() {
             this.suggestion = new Suggestion();

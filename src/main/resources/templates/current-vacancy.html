@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+>
 
 <head>
     <meta charset="UTF-8">
@@ -19,11 +19,15 @@
     <p th:text="${vacancy.getText()}"></p>
     <label>Автор</label>
     <p th:text="${vacancy.getAuthorName()}"></p>
-    <div th:if="${yourself}">
+    <div th:text="${user.getRoles().contains(T(com.example.demo.role.Role).USER)}">
+    <div th:unless="${vacancy.getWorker() != null}">
+    <div th:unless="${yourself}">
         <label>Стать исполнителем</label>
         <form method="post" th:action="'/selected/' + ${vacancy.getId()}">
             <button type="submit">Отправить заявку</button>
         </form>
+    </div>
+    </div>
     </div>
 </div>
 </body>

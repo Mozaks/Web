@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+>
 
 <head>
     <meta charset="UTF-8">
@@ -15,7 +15,11 @@
     <form method="post">
         <label> <input type="text" name="vacancyTitle" th:value="${vacancy.getTitle()}"> Редактирование
             заголовка</label><br>
-        <label> <input type="text" name="vacancyTag" th:value="${vacancy.getTag()}"> Редактирование тэга</label><br>
+        <label>Редактирование тэгов</label>
+        <div th:each="tag : ${tags}">
+            <p th:text="${tag.getTag()}"></p>
+        </div>
+        <input type="text" name="vacancyTag"> <br>
         <label> <input type="text" name="vacancyText" th:value="${vacancy.getText()}"> Редактирование текста</label><br>
         <input type="hidden" name="vacancyId" th:value="${vacancy.getId()}">
         <button type=" submit">Редактировать</button>

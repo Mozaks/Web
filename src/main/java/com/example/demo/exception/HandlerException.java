@@ -8,7 +8,12 @@ public class HandlerException {
 
     @ExceptionHandler(CustomException.class)
     public String handleCustomException(Exception e) {
-        return "exception";
+        return "exception/exception";
+    }
+
+    @ExceptionHandler(IllegalIdException.class)
+    public String handleIllegalIdException(Exception e) {
+        return "exception/exception";
     }
 
 }
