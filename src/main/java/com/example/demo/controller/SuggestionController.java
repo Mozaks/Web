@@ -35,7 +35,9 @@ public class SuggestionController {
 
     @PostMapping("/appoint/{idSug}/vacancy/{idVac}")
     public String appoint(@PathVariable(value = "idSug") int idSug, @PathVariable(value = "idVac") int idVac, @AuthenticationPrincipal Customer customer) throws CustomException, IllegalIdException {
-        if (customer.getId().equals(vacancyRepository.findById(idVac).orElseThrow(() -> new CustomException()).getAuthor().getId())) {
+        if (!customer.getId().equals(vacancyRepository.findById(idVac).orElseThrow(() -> new CustomException()).getAuthor().getId())) {
+            System.out.println(customer.getId());
+            System.out.println(vacancyRepository.findById(idVac).orElseThrow(() -> new CustomException()).getAuthor().getId());
             throw new IllegalIdException();
         } else {
             suggestionService.appoint(idSug, idVac, customer);

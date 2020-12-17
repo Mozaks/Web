@@ -3,41 +3,57 @@
 >
 
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <title>Customer list</title>
 </head>
 <header>
     <div th:insert="~{fragments/header :: header}"></div>
 </header>
 <body>
-Список пользователей
-<table border="1">
-    <thead>
-    <tr>
-        <th>Логин</th>
-        <th>Имя</th>
-        <th>Фамилия</th>
-        <th>Отчество</th>
-        <th>Роли</th>
-        <th>Почта</th>
-        <th></th>
-        <th></th>
-    </tr>
-    </thead>
-    <tr th:each="customer : ${customers}">
-        <td th:text="${customer.getUsername()}"></td>
-        <td th:text="${customer.getName()}"></td>
-        <td th:text="${customer.getFirstName()}"></td>
-        <td th:text="${customer.getLastName()}"></td>
-        <td th:text="${customer.getRoles()}"></td>
-        <td th:text="${customer.getEmail()}"></td>
-        <td><a th:href="@{'/customer/' + ${customer.getId()} + '/edit'}">Редактировать</a></td>
-        <td>
-            <form th:action="'/customer/' + ${customer.getId()} + '/remove'" method="post">
-                <button type="submit">Удалить</button>
-            </form>
-        </td>
-    </tr>
-</table>
+<div class="container">
+    <div class="row">
+        <div class="col-sm">
+            <h1>User's list</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm">
+            <table border="1">
+                <thead>
+                <tr>
+                    <th>Login</th>
+                    <th>Name</th>
+                    <th>Last name</th>
+                    <th>First name</th>
+                    <th>Role</th>
+                    <th>Email</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tr th:each="customer : ${customers}">
+                    <td th:text="${customer.getUsername()}"></td>
+                    <td th:text="${customer.getName()}"></td>
+                    <td th:text="${customer.getFirstName()}"></td>
+                    <td th:text="${customer.getLastName()}"></td>
+                    <td th:text="${customer.getRoles()}"></td>
+                    <td th:text="${customer.getEmail()}"></td>
+                    <td><a th:href="@{'/customer/' + ${customer.getId()} + '/edit'}">Edit</a></td>
+                    <td>
+                        <form th:action="'/customer/' + ${customer.getId()} + '/remove'" method="post">
+                            <button type="submit">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

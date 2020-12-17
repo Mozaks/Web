@@ -39,8 +39,9 @@ public class VacancyService {
                     Arrays.stream(tag.split(","))
                             .collect(Collectors.toList());
             for (String t : tags) {
+                System.out.println(t);
                 tagRepository.save(new Tag.Builder()
-                        .setTag(tag)
+                        .setTag(t)
                         .setVacancy(vacancy)
                         .build());
             }

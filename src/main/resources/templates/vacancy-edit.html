@@ -3,8 +3,13 @@
 >
 
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <title>Vacancy edit</title>
 </head>
 <header>
     <div th:insert="~{fragments/header :: header}"></div>
@@ -12,18 +17,44 @@
 <body>
 Редактор вакансий
 <div th:each="vacancy : ${lst}">
-    <form method="post">
-        <label> <input type="text" name="vacancyTitle" th:value="${vacancy.getTitle()}"> Редактирование
-            заголовка</label><br>
-        <label>Редактирование тэгов</label>
-        <div th:each="tag : ${tags}">
-            <p th:text="${tag.getTag()}"></p>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <form class="container" method="post">
+                    <div class="row">
+                        <div class="col-sm">
+                            <label> <input type="text" name="vacancyTitle" th:value="${vacancy.getTitle()}">
+                                Редактирование
+                                заголовка</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm">
+                            <label>Редактирование тэгов</label>
+                            <div th:each="tag : ${tags}">
+                                <p th:text="${tag.getTag()}"></p>
+                            </div>
+                            <input type="text" name="vacancyTag">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm">
+                            <label> Редактирование текста</label><textarea name="text"
+                                                                           th:value="${vacancy.getText()}"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm">
+                            <button type=" submit">Редактировать</button>
+                        </div>
+                    </div>
+
+                    <input type="hidden" name="vacancyId" th:value="${vacancy.getId()}">
+                </form>
+            </div>
         </div>
-        <input type="text" name="vacancyTag"> <br>
-        <label> <input type="text" name="vacancyText" th:value="${vacancy.getText()}"> Редактирование текста</label><br>
-        <input type="hidden" name="vacancyId" th:value="${vacancy.getId()}">
-        <button type=" submit">Редактировать</button>
-    </form>
+    </div>
+
 </div>
 </body>
 </html>

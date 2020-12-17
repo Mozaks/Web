@@ -2,22 +2,47 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
 >
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Profile</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 </head>
 <header>
     <div th:insert="~{fragments/header :: header}"></div>
 </header>
 <body th:object="${user}">
-<div th:text="${user.getUsername()}"></div>
-<div th:if="${user.getRoles().contains(T(com.example.demo.role.Role).USER)}">
-    <div th:insert="~{fragments/vacancy-list :: vacancy-list}"></div>
-    <button onclick="window.location.href = '/vacancy';">Добавить вакансию</button>
+<div class="container">
+    <div class="row">
+        <div class="col-sm">
+            <h1 th:text="'Greetings, ' + ${user.getUsername()}"></h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm">
+            <div th:if="${user.getRoles().contains(T(com.example.demo.role.Role).USER)}">
+                <div th:insert="~{fragments/vacancy-list :: vacancy-list}"></div>
+                <button onclick="window.location.href = '/vacancy';">Add vacancy</button>
+            </div>
+            <div th:if="${user.getRoles().contains(T(com.example.demo.role.Role).ADMIN)}">
+                <button onclick="window.location.href = '/customer';">User's list</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm">
+            <button onclick="window.location.href = '/suggestion';">View suggestions for vacancy</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm">
+            <button onclick="window.location.href = '/profile/edit';">Change profile</button>
+        </div>
+    </div>
 </div>
-<div th:if="${user.getRoles().contains(T(com.example.demo.role.Role).ADMIN)}">
-    <button onclick="window.location.href = '/customer';">Список пользователей</button>
-</div>
-<button onclick="window.location.href = '/suggestion';">Просмотреть предложения на вакансии</button>
-<button onclick="window.location.href = '/profile/edit';">Изменить профиль</button>
+
+
 </body>
 </html>

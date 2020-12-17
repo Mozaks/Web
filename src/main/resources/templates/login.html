@@ -2,27 +2,60 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
 >
 <head>
-    <title>Spring Security Example </title>
+    <title>Login</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 </head>
 <header>
     <div th:insert="~{fragments/header :: header}"></div>
 </header>
 <body>
-<h1>Login</h1>
-<div th:if="${param.error}">
-    Invalid username and password.
-</div>
-<div th:if="${param.logout}">
-    You have been logged out.
-</div>
-<div th:if="${message}">
-    <p th:text="${message}">
-</div>
-<form th:action="@{/login}" method="post">
-    <div><label> User login : <input type="text" name="username"/> </label></div>
-    <div><label> Password: <input type="password" name="password"/> </label></div>
-    <div><input type="submit" value="Sign In"/></div>
+
+<form class="container" th:action="@{/login}" method="post">
+    <div class="row">
+        <div class="col-sm">
+            <h1>Login</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm">
+            <div th:if="${param.error}">
+                Invalid username and password.
+            </div>
+            <div th:if="${param.logout}">
+                You have been logged out.
+            </div>
+            <div th:if="${message}">
+                <p th:text="${message}">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm">
+            <label> User login : <input type="text" name="username"/> </label>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm">
+            <label> Password: <input type="password" name="password"/> </label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm">
+            <input type="submit" value="Sign In"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm">
+            <a href="/registration">Registration</a>
+        </div>
+    </div>
 </form>
-<a href="/registration">Registration</a>
+
 </body>
 </html>

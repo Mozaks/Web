@@ -2,31 +2,58 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
 >
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <title>Suggestion</title>
 </head>
 <header>
     <div th:insert="~{fragments/header :: header}"></div>
 </header>
+<div class="container">
+    <div class="row">
+        <div class="col-sm">
+            <div class="container" th:if="${user.getRoles().contains(T(com.example.demo.role.Role).USER)}">
+                <div class="row">
+                    <div class="col-sm">
+                        <h3>Suggestions for your vacancies</h3>
+                    </div>
+                </div>
+                <div class="row" th:each="sug : ${workers}">
+                    <div class="col-sm" th:each="vacancy : ${vacancies}">
+                        <p th:text="'Исполнитель - ' + ${sug.getUsername()} + '; вакансия -' + ${vacancy.getTitle()}"></p>
+                        <form method="post"
+                              th:action="'suggestion/appoint/' + ${sug.getId()} + '/vacancy/' + ${vacancy.getId()}">
+                            <button type="submit">Назначить исполнителя</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm">
+        <div class="container" th:if="${user.getRoles().contains(T(com.example.demo.role.Role).FREELANCER)}">
+            <div class="row">
+                <div class="col-sm">
+                    <h3>Your suggestions for vacancy</h3>
+                </div>
+            </div>
+            <div class="row" th:each="author : ${authors}">
+                <div class="col-sm" th:each="vacancy : ${vacancies}">
+                    <p th:text="'Исполнитель - ' +${author.getUsername()} + '; вакансия -' + ${vacancy.getTitle()}"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
 <body>
-<div th:if="${user.getRoles().contains(T(com.example.demo.role.Role).USER)}">
-    <h3>Предложения на ваши вакансии</h3>
-    <div th:each="sug : ${workers}">
-        <div th:each="vacancy : ${vacancies}">
-            <p th:text="'Исполнитель - ' + ${sug.getUsername()} + '; вакансия -' + ${vacancy.getTitle()}"></p>
-            <form method="post" th:action="'suggestion/appoint/' + ${sug.getId()} + '/vacancy/' + ${vacancy.getId()}">
-                <button type="submit">Назначить исполнителя</button>
-            </form>
-        </div>
-    </div>
-</div>
-<div th:if="${user.getRoles().contains(T(com.example.demo.role.Role).FREELANCER)}">
-    <h3>Ваши запросы на вакансии</h3>
-    <div th:each="author : ${authors}">
-        <div th:each="vacancy : ${vacancies}">
-            <p th:text="'Исполнитель - ' +${author.getUsername()} + '; вакансия -' + ${vacancy.getTitle()}"></p>
-        </div>
-    </div>
-</div>
+
+
 </body>
 </html>

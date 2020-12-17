@@ -2,23 +2,51 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
 >
 <head>
-    <title>Hello World!</title>
+    <title>Profile edit</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 </head>
 <header>
     <div th:insert="~{fragments/header :: header}"></div>
 </header>
 <body>
-<div th:if="${message}">
-    <p th:text="${message}"></p>
+<div class="container">
+    <div class="row">
+        <div class="col-sm">
+            <div th:if="${message}">
+                <p th:text="${message}"></p>
+            </div>
+        </div>
+    </div>
 </div>
-    <form th:action="@{/profile/edit}" method="post" th:object="${customer}">
-        <p>Новая почта</p>
-        <input type="email" name="newEmail" th:placeholder="${customer.getEmail()}">
-        <p>Новый пароль</p>
-        <input type="text" name="newPassword" th:placeholder="${customer.getPassword()}">
-        <p>Новое имя пользователя</p>
-        <input type="text" name="newUsername" th:placeholder="${customer.getUsername()}">
-        <button type="submit">Изменить данные</button>
-    </form>
+<form class="container" th:action="@{/profile/edit}" method="post" th:object="${customer}">
+    <div class="row">
+        <div class="col-sm">
+            <p>New email</p>
+            <input type="email" name="newEmail" th:placeholder="${customer.getEmail()}">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm">
+            <p>New password</p>
+            <input type="password" name="newPassword">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm">
+            <p>New user's name</p>
+            <input type="text" name="newUsername" th:placeholder="${customer.getUsername()}">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm">
+            <button type="submit">Change data</button>
+        </div>
+    </div>
+</form>
 </body>
 </html>

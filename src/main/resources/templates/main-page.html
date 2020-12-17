@@ -2,22 +2,43 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
 >
 <head>
-    <title>Hello World!</title>
+    <title>Main page</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
 </head>
 <header>
     <div th:insert="~{fragments/header :: header}"></div>
 </header>
 <body>
-<h1 th:inline="text">Привет, [[${#httpServletRequest.remoteUser}]]!</h1>
-<a href="/vacancy">Добавить вакансию</a>
-<form method="post" th:action="@{/filter}">
-    <input type="text" name="filter" placeholder="Найти вакансию">
-    <button type="submit">Найти</button>
-</form>
-<div th:each="vacancy : ${vacancies}">
-    <p th:text="'Название ' +${vacancy.getTitle()}  + ', исполнитель - ' + ${vacancy.getWorkerName()}"></p>
-    <div th:replace="~{fragments/tags :: tags}"></div>
-    <a th:href="@{'/selected/' +${vacancy.getId()}}">Просмотреть вакансию</a>
+<div class="container">
+    <div class="row">
+        <div class="col-sm">
+            <a href="/vacancy">Add vacancy</a>
+            <form method="post" th:action="@{/filter}">
+                <input type="text" name="filter" placeholder="Find vacancy">
+                <button type="submit">Find</button>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row" th:each="vacancy : ${vacancies}">
+        <div class="col-sm">
+            <div class="container">
+                <div class="col-sm">
+                    <p th:text="'Title ' +${vacancy.getTitle()}  + ', worker - ' + ${vacancy.getWorkerName()}"></p>
+                    <label>Tags</label>
+                    <div th:replace="~{fragments/tags :: tags}"></div>
+                    <a th:href="@{'/selected/' +${vacancy.getId()}}">View a vacancy</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

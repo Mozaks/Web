@@ -57,7 +57,7 @@ public class Vacancy {
     }
 
     public String getAuthorName() {
-        return author != null ? author.getUsername() : "заказчика нет";
+        return author != null ? author.getUsername() : "author is absent";
     }
 
     public Integer getId() {
@@ -77,7 +77,7 @@ public class Vacancy {
     }
 
     public String getWorkerName() {
-        return worker != null ? worker.getUsername() : "исполнителя нет";
+        return worker != null ? worker.getUsername() : "worker is absent";
     }
 
     public static class Builder {

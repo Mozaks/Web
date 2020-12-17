@@ -3,13 +3,22 @@
 >
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
 </head>
 <body>
-<div th:each="tags : ${lst}"  th:fragment="tags">
-    <div th:each="tag : ${tags}">
-        <div th:if="${tag.getVacancy().equals(vacancy)}">
-            <span th:text="${tag.getTag()}"></span>
+<div class="container" th:each="tags : ${lst}" th:fragment="tags">
+    <div class="row">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm"  th:each="tag : ${tags}" th:if="${tag.getVacancy().equals(vacancy)}">
+                    <span th:text="${tag.getTag()}"></span>
+                </div>
+            </div>
         </div>
     </div>
 </div>
