@@ -3,7 +3,6 @@ package com.example.demo.service;
 import com.example.demo.domain.ServerUrl;
 import com.example.demo.entity.Customer;
 import com.example.demo.repository.CustomerRepository;
-import com.example.demo.role.Role;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,7 +12,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.Collections;
 import java.util.UUID;
 
 @Service
