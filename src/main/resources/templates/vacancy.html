@@ -1,17 +1,40 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+>
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <title>Vacancy</title>
 </head>
+<header>
+    <div th:insert="~{fragments/header :: header}"></div>
+</header>
 <body>
-<form th:action="@{/vacancy/add}" method="post">
-    <div><label> Название задачи: <input type="text" name="title"/> </label></div>
-    <div><label>Текст задачи: <textarea name="text"></textarea> </label></div>
-    <div>Тэги задачи: <input type="text" name="tag"/> </label></div>
-    <div><input type="submit" value="Отправить"/></div>
+<form class="container" th:action="@{/vacancy/add}" method="post">
+    <div class="row">
+        <div class="col-sm">
+            <div><label> Название задачи: <input type="text" name="title"/> </label></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm">
+            <div><label>Текст задачи: <textarea name="text"></textarea> </label></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm">
+            <div>Тэги задачи: <input type="text" name="tag"/> </label></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm">
+            <div><input type="submit" value="Отправить"/></div>
+        </div>
+    </div>
 </form>
-<a href="vacancy/list">Ваши вакансии</a>
 </body>
 </html>

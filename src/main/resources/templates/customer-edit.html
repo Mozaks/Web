@@ -1,24 +1,42 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+>
 
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <title>Customer edit</title>
 </head>
+<header>
+    <div th:insert="~{fragments/header :: header}"></div>
+</header>
 <body>
-Редактор пользователя
-<form th:action="@{'/customer/' + ${customer.getId()} + '/edit'}" method="post" th:object="${customer}">
-    <input type="text" name="customerName" th:placeholder="${customer.getUsername()}" th:object="${customer}">
-    <ul>
-        <li th:each="role : ${T(com.example.demo.role.Role).values()}">
-            <div>
-                <input type="checkbox" name="roles" th:field="*{roles}" th:value="${role.name()}" />
-                <label th:text="${role.name()}"></label>
-            </div>
-        </li>
-    </ul>
-    <button type=" submit">Отправить</button>
+<h1>User edit</h1>
+<form class="container">
+    <div class="row">
+        <div class="col-sm">
+            <input type="text" name="customerName" th:placeholder="${customer.getUsername()}">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm">
+            <ul>
+                <p><input name="roles" type="radio" th:value="${T(com.example.demo.role.Role).USER}" checked> User</p>
+                <p><input name="roles" type="radio" th:value="${T(com.example.demo.role.Role).FREELANCER}">Freelancer
+                </p>
+                <p><input name="roles" type="radio" th:value="${T(com.example.demo.role.Role).ADMIN}">Admin</p>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm">
+            <button type=" submit">Submit</button>
+        </div>
+    </div>
 </form>
 </body>
 </html>

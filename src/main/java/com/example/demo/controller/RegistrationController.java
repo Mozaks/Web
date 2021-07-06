@@ -1,46 +1,44 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.Customer;
-import com.example.demo.repository.CustomerRepository;
-import com.example.demo.role.Role;
+import com.example.demo.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 
 @Controller
 public class RegistrationController {
     @Autowired
-    private CustomerRepository customerRepository;
+    private CustomerService customerService;
+
     @GetMapping("/registration")
-    public String registration()
-    {
+    public String registration() {
         return "registration";
     }
 
     @PostMapping("/registration")
-    public String addCustomer(Customer customer, Model model)
-    {
-        Customer customerDb = customerRepository.findByUsername(customer.getUsername());
-
-        if (customerDb != null){
-            model.addAttribute("message", "Customer alreage exists!");
+    public String addCustomer(Customer customer, Model model) {
+        if (!customerService.addCustomer(customer)) {
+            model.addAttribute("message", "Customer already exists!");
             return "registration";
         }
 
-        customer.setActive(true);
-        Set<Role> roles = new HashSet<>();
-//        roles.add(Role.ADMIN);
-        roles.add(Role.USER);
-        customer.setRoles(roles);
-        customerRepository.save(customer);
-
         return "redirect:/login";
+    }
+
+    @GetMapping("/activate/{code}")
+    public String activate(Model model, @PathVariable String code) {
+        boolean isActivated = customerService.activateCustomer(code);
+
+        if (isActivated) {
+            model.addAttribute("message", "User successfully activated");
+        } else {
+            model.addAttribute("message", "Activation code is not found");
+        }
+
+        return "login";
     }
 }

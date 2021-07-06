@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Current vacancy</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+</head>
+<header>
+    <div th:insert="~{fragments/header :: header}"></div>
+</header>
+<body>
+<div>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <label>Title</label>
+                <p th:text="${vacancy.getTitle()}"></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                <label>Tags</label>
+                <div th:insert="~{fragments/tags :: tags}"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                <label>Text</label>
+                <p th:text="${vacancy.getText()}"></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                <label>Author</label>
+                <p th:text="${vacancy.getAuthorName()}"></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                <div th:unless="${vacancy.getWorker() != null}">
+                    <div th:unless="${yourself}">
+                        <label>Send a request to become a performer</label>
+                        <form method="post" th:action="'/selected/' + ${vacancy.getId()}">
+                            <button type="submit">Send request</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
